@@ -3,17 +3,12 @@
   <Hero />
 </template>
 
-<script setup>
+<script>
 import Header from './components/Header.vue'
 import Hero from './components/Hero.vue'
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  scroll-behavior: smooth;
+export default {
+  name: "App",
+  components: {Header, Hero}
 }
-</style>
+</script>
