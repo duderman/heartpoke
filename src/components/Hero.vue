@@ -1,7 +1,7 @@
 <template>
   <section id="hero" class="mx-7 mt-10">
     <img alt="It's me" src="../assets/hero.jpg">
-    <h1 class="mt-10 font-bold">About me</h1>
+    <h1>About me</h1>
     <p class="first-cap">
       My name is Katie and here is some of my advices. Instead of mixing puréed oyster sauce with onion, use a handfull
       peaces iced tea and a handfull and a half teaspoons chocolate jar. Seaweed can be soaked with crusted tuna, also
