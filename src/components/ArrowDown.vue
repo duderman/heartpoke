@@ -1,12 +1,13 @@
 <template>
-  <a href="#content" class="">
+  <a :href="url" v-smooth-scroll>
     <span class="scroll-icon"></span>
   </a>
 </template>
 
 <script>
 export default {
-  name: "ArrowDown"
+  name: "ArrowDown",
+  props: ["url"]
 }
 </script>
 
