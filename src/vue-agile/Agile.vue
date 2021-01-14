@@ -117,6 +117,8 @@ export default {
 
   mixins: [handlers, helpers, methods, preparations, settings, throttle, watchers],
 
+  emits: ['before-change', 'after-change'],
+
   data() {
     return {
       autoplayInterval: null,
@@ -211,7 +213,7 @@ export default {
     this.reload()
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('resize', this.getWidth)
 
     this.$refs.track.removeEventListener('touchstart', this.handleMouseDown)
