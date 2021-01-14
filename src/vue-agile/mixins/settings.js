@@ -218,6 +218,7 @@ const mixin = {
 
 			// Sort breakpoints
 			if (initialSettings.responsive) {
+				// noinspection JSConstantReassignment
 				initialSettings.responsive = orderBy(initialSettings.responsive, 'breakpoint')
 			}
 
@@ -231,8 +232,10 @@ const mixin = {
 			if (responsive) {
 				responsive.forEach(option => {
 					if (settings.mobileFirst ? option.breakpoint < this.widthWindow : option.breakpoint > this.widthWindow) {
-						for (let key in option.settings) {
-							settings[key] = option.settings[key]
+						for (const key in option.settings) {
+							if (option.settings.hasOwnProperty(key)) {
+								settings[key] = option.settings[key]
+							}
 						}
 					}
 				})

@@ -5,6 +5,7 @@ import VueAgile from './vue-agile'
 import App from './App.vue'
 import './index.css'
 
+// noinspection JSCheckFunctionSignatures
 createApp(App)
     .use(VueSmoothScroll)
     .use(VueAgile)

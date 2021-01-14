@@ -6,7 +6,7 @@
     h1 {
         @apply text-4xl;
         @apply mt-10;
-        @apply font-bold;
+        @apply font-black;
     }
 
     h2 {
