@@ -1,7 +1,7 @@
 <template>
   <h1>Portfolio</h1>
   <h2>Look what I can do</h2>
-  <VueAgile>
+  <VueAgile autoplay="true" class="mt-5">
     <div class="agile__slide">
       <img alt="1" src="../assets/slide1.png">
     </div>
