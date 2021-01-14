@@ -58,7 +58,7 @@
           :disabled="!canGoToPrev"
           class="agile__nav-button agile__nav-button--prev"
           type="button"
-          @click="goToPrev(), restartAutoPlay()"
+          @click="goToPrev(); restartAutoPlay()"
       >
         <slot name="prevButton">
           ←
@@ -80,7 +80,7 @@
         >
           <button
               type="button"
-              @click="goTo(n - 1), restartAutoPlay()"
+              @click="goTo(n - 1); restartAutoPlay()"
           >
             {{ n }}
           </button>
@@ -93,7 +93,7 @@
           :disabled="!canGoToNext"
           class="agile__nav-button agile__nav-button--next"
           type="button"
-          @click="goToNext(), restartAutoPlay()"
+          @click="goToNext(); restartAutoPlay()"
       >
         <slot name="nextButton">
           →
