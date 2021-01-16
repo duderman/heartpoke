@@ -1,6 +1,7 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import VueSmoothScroll from 'vue3-smooth-scroll'
-import VueAgile from './components/carousel'
+import VueEasyLightBox from "vue-easy-lightbox";
+import Carousel from './components/carousel'
 
 import App from './App.vue'
 import './index.css'
@@ -8,5 +9,6 @@ import './index.css'
 // noinspection JSCheckFunctionSignatures
 createApp(App)
     .use(VueSmoothScroll)
-    .use(VueAgile)
+    .use(Carousel)
+    .use(VueEasyLightBox)
     .mount('#app')

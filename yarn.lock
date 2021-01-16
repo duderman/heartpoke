@@ -877,6 +877,11 @@ vite@^2.0.0-beta.12:
   optionalDependencies:
     fsevents "~2.1.2"
 
+vue-easy-lightbox@^1.0.0-rc.3:
+  version "1.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/vue-easy-lightbox/-/vue-easy-lightbox-1.0.0-rc.3.tgz#acb38a27575ceceab529fa7cd9c21c3fba3c907c"
+  integrity sha512-lTy/RwwlUBFZYgLvWoknLavd1Qa3vIpt/Gqxb5s91Vqrtpl+idMHRh++hWkHfGim37uIpqpVeGg+Tggi06fGrA==
+
 vue3-smooth-scroll@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/vue3-smooth-scroll/-/vue3-smooth-scroll-0.8.0.tgz#9b33ba146c9e5897a41f6344c0f0c5e82c5f6350"
