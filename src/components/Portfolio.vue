@@ -1,8 +1,8 @@
 <template>
   <h1>Portfolio</h1>
   <h2>Look what I can do</h2>
-  <Carousel ref="carousel" :autoplay="autoplay" class="mt-5" @click="showLightbox">
-    <div v-for="image in images" :key="image" class="agile__slide">
+  <Carousel ref="carousel" :autoplay="autoplay" class="mt-5">
+    <div v-for="image in images" :key="image" class="agile__slide" @click="showLightbox">
       <img :alt="image" :src="image">
     </div>
   </Carousel>
