@@ -3,6 +3,7 @@
     <img alt="It's me" src="../assets/hero.jpeg">
     <h1>About me</h1>
     <p class="first-cap">
+      My name is Katie and I’m a hand poke tattoo artist.
       My career began in Saint-Petersburg, Russia in October 2018.
       I always feel happiness when I’m drawing and I was interested in tattoos for ages.
       One day I decided that I need to change my life and to finally start doing what I love.
