@@ -6,10 +6,6 @@
       I will contact you back by e-mail to clarify additional information if needed and with information about price and
       my availability.
     </p>
-    <p>
-      It is important for me to understand the idea of your tattoo, so the more specifically you describe all the
-      nuances that are important to you, the easier it will be for us to work
-    </p>
     <p class="text-gray-400 mt-2">
       Please understand that I can decline your idea if it doesn’t suit my style of drawing and/or tattooing.
     </p>
