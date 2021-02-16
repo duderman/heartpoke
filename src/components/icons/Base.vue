@@ -11,6 +11,7 @@
     <g :style="`fill:url(#${gradId})`">
       <slot/>
     </g>
+    text
   </svg>
 </template>
 
