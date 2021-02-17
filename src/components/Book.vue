@@ -1,5 +1,5 @@
 <template>
-  <section id="book" class="mx-7 my-5 max-w-md">
+  <section id="book" class="mx-7 my-5">
     <h1 class="my-10">Book</h1>
     <p>
       If you want to sign up for a session with me, you must fill out this form.
