@@ -12,6 +12,7 @@
 <script>
 import {ref} from 'vue'
 import VueEasyLightBox from "vue-easy-lightbox";
+import disableScroll from 'disable-scroll';
 
 import {Carousel} from "./carousel"
 
@@ -44,11 +45,13 @@ export default {
       index.value = carousel.value.getCurrentSlide()
       lightboxVisible.value = true
       autoplay.value = false
+      disableScroll.on()
     }
 
     function hideLightbox() {
       lightboxVisible.value = false
       autoplay.value = true
+      disableScroll.off()
     }
 
     function slideChanged(oldIndex, newIndex) {
