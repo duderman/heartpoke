@@ -1,5 +1,5 @@
 <template>
-  <a v-smooth-scroll="{offset: -20}" :href="url">
+  <a v-smooth-scroll :href="url">
     <span class="scroll-icon"></span>
   </a>
 </template>

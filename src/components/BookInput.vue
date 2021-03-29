@@ -4,28 +4,33 @@
     <p class="my-1 text-gray-300">
       <slot/>
     </p>
-    <textarea
-        v-if="type == 'textarea'"
-        :name="name"
-        :required="required"
-        class="mt-2 w-full rounded h-40 text-gray-700 p-3">
-    </textarea>
-    <input
-        v-else
-        :max="max"
-        :min="min"
-        :name="name"
-        :required="required"
-        :type="type"
-        :value="value"
-        class="mt-2 w-full rounded h-10 text-gray-700 px-3"
-    />
+    <Field v-slot="{ field }" :name="name">
+      <textarea
+          v-if="type === 'textarea'"
+          v-bind="field"
+          :class="classes"
+          :name="name">
+      </textarea>
+      <input
+          v-else
+          v-bind="field"
+          :class="classes"
+          :max="max"
+          :name="name"
+          :placeholder="placeholder"
+          :type="type"
+      />
+    </Field>
+    <ErrorMessage :name="name" class="text-red-500"/>
   </div>
 </template>
 
 <script>
+import {Field, ErrorMessage} from 'vee-validate';
+
 export default {
   name: "BookInput",
+  components: {Field, ErrorMessage},
   props: {
     name: {
       type: String
@@ -41,22 +46,27 @@ export default {
       type: String,
       default: "text"
     },
-    min: {
-      type: String
-    },
     max: {
       type: String
     },
-    value: {
+    placeholder: {
       type: String
     },
-    disclaimer: {
-      type: String
+  },
+  data() {
+    return {
+      classes: "mt-2 w-full rounded h-10 text-gray-700 px-3"
     }
   }
 }
 </script>
 
 <style scoped>
+textarea {
+  @apply h-40
+}
 
+input {
+  @apply h-10
+}
 </style>

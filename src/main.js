@@ -8,7 +8,7 @@ import './index.css'
 
 // noinspection JSCheckFunctionSignatures
 createApp(App)
-    .use(VueSmoothScroll)
+  .use(VueSmoothScroll, {offset: -20})
     .use(Carousel)
     .use(VueEasyLightBox)
     .mount('#app')
