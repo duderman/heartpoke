@@ -1,6 +1,6 @@
 <template>
   <section id="hero" class="mx-7 mt-10">
-    <img alt="It's me" src="../assets/hero.jpeg">
+    <img alt="It's me" data-aos="zoom-in" src="../assets/hero.jpeg">
     <h1>About me</h1>
     <p class="first-cap">
       My name is Katie and I’m a hand poke tattoo artist.

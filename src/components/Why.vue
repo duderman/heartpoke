@@ -1,18 +1,16 @@
 <template>
-  <h1 class="mt-20">Why handpoke you ask?</h1>
-  <div v-for="(why, index) in whys" :key="index" class="mt-10 px-10">
+  <h1 class="mt-20">Why hand poke</h1>
+  <div v-for="({icon, header, effect}, index) in whys" :key="index" :data-aos="effect" class="mt-10 px-10">
     <div class="px-8">
-      <component :is="why.icon"/>
+      <component :is="icon"/>
     </div>
-    <h2 class="mt-5">{{ why.header }}</h2>
-    <p class="mt-3">{{ why.description }}</p>
+    <h2 class="mt-5">{{ header }}</h2>
   </div>
 </template>
 
 <script>
 import BandAid from "./icons/BandAid.vue"
 import Pain from "./icons/Pain.vue"
-
 
 export default {
   name: "Why",
@@ -21,16 +19,16 @@ export default {
     const whys = [
       {
         icon: BandAid,
-        header: 'Heals fast',
-        description: 'Who can discover the uniqueness and futility of a lover if he has the eternal shame of the karma?'
+        header: 'Faster healing',
+        effect: 'fade-left'
       },
       {
         icon: Pain,
-        header: 'Less painful',
-        description: 'The shining sex of intuition is to forget with samadhi.'
+        header: 'Less painful process',
+        effect: 'fade-right'
       }
     ]
     return {whys}
-  }
+  },
 }
 </script>
