@@ -11,10 +11,11 @@
 <script>
 import BandAid from "./icons/BandAid.vue"
 import Pain from "./icons/Pain.vue"
+import Crutch from "./icons/Crutch.vue"
 
 export default {
   name: "Why",
-  components: {BandAid, Pain},
+  components: {BandAid, Pain, Crutch},
   setup() {
     const whys = [
       {
@@ -26,6 +27,11 @@ export default {
         icon: Pain,
         header: 'Less painful process',
         effect: 'fade-right'
+      },
+      {
+        icon: Crutch,
+        header: 'Less traumatic for skin',
+        effect: 'fade-left'
       }
     ]
     return {whys}
