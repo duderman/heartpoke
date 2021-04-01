@@ -14,7 +14,7 @@
       <p class="mt-2 text-base leading-normal">Select references</p>
       <p class="text-gray-500 text-sm">(up to 3 files)</p>
       <p v-if="tooManyFiles" class="text-red-800">Sorry that's too many files</p>
-      <input ref="fileInput" accept="image/*" class="hidden" multiple type='file' v-on:change="setFiles"/>
+      <input accept="image/*" class="hidden" multiple type='file' v-on:change="setFiles"/>
     </label>
   </div>
 </template>
@@ -47,7 +47,6 @@ export default {
     },
     clearFiles: function () {
       this.files = []
-      this.$refs.fileInput.value = null
     }
   }
 }

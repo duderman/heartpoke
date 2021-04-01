@@ -37,7 +37,7 @@
             Don’t hesitate to attach the photographs of works that I have already completed that you liked,
             any images or illustrations that could help with designing.
           </p>
-          <FileSelect name="references"/>
+          <FileSelect ref="referencesInput" name="references"/>
         </div>
         <Button :disabled="isInvalid" :loading="isWaiting" @click="bookBtnClicked(values)">
           Book now
@@ -57,6 +57,7 @@ import BookInput from './BookInput.vue'
 import FileSelect from "./FileSelect.vue";
 import Button from "./Button.vue";
 import {Form} from 'vee-validate';
+
 import Heart from "./icons/Heart.vue";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
@@ -77,6 +78,14 @@ function testAge(dob) {
   return dobDate < eighteenYearsAgoDate()
 }
 
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
 
 export default {
   name: "Book",
@@ -98,7 +107,7 @@ export default {
     }
 
     const isWaiting = ref(false)
-    const isInvalid = ref(true)
+    const isInvalid = ref(false)
     const bookedSuccessfully = ref(false)
 
     return {bookRef, scrollToBook, recaptcha, isWaiting, isInvalid, bookedSuccessfully}
@@ -132,17 +141,24 @@ export default {
     async bookBtnClicked(values) {
       const {valid} = await this.$refs.form.validate()
       if (valid) {
-        this.loading = true
-        this.disabled = true
+        this.isWaiting = true
+        this.isInvalid = true
         try {
           await this.recaptcha()
-          await axios.post("https://heartpoke.co.uk/book", values)
+
+          let params = {...values, references: []}
+          for (const f of this.$refs.referencesInput.files) {
+            const b64 = await fileToBase64(f)
+            params.references.push(b64)
+          }
+
+          await axios.post("https://heartpoke.co.uk/book", params)
           this.bookedSuccessfully = true
         } catch {
           // this.$toast.error("Something went wrong. Try again later")
         } finally {
-          this.loading = false
-          this.disabled = false
+          this.isWaiting = false
+          this.isInvalid = false
         }
       } else {
         this.scrollToBook()

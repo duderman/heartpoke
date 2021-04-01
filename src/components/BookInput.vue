@@ -4,12 +4,13 @@
     <p class="my-1 text-gray-300">
       <slot/>
     </p>
-    <Field v-slot="{ field }" :name="name">
+    <Field v-slot="{ field, handleChange }" :name="name">
       <textarea
           v-if="type === 'textarea'"
           v-bind="field"
           :class="classes"
-          :name="name">
+          :name="name"
+          @change="handleChange">
       </textarea>
       <input
           v-else
@@ -19,6 +20,7 @@
           :name="name"
           :placeholder="placeholder"
           :type="type"
+          @change="handleChange"
       />
     </Field>
     <ErrorMessage :name="name" class="text-red-500"/>
