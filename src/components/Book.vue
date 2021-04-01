@@ -112,7 +112,7 @@ export default {
     }
 
     const isWaiting = ref(false)
-    const isInvalid = ref(false)
+    const isInvalid = ref(true)
     const bookedSuccessfully = ref(false)
     const bookingFailed = ref(false)
 

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "deploy": "aws s3 sync ./dist s3://heartpoke"
   },
   "dependencies": {
     "aos": "^2.3.4",
