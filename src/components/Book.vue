@@ -1,45 +1,63 @@
 <template>
   <section id="book" ref="bookRef" class="mx-7 my-5">
     <h1 class="my-10">Book</h1>
-    <p>
-      If you want to sign up for a session with me, you must fill out this form.
-      I will contact you back by e-mail to clarify additional information if needed and with information about price and
-      my availability.
-    </p>
-    <p class="text-gray-400 mt-2">
-      Please understand that I can decline your idea if it doesn’t suit my style of drawing and/or tattooing.
-    </p>
-    <Form ref="form" v-slot="{values}" :initial-values="initialValues" :validation-schema="schema">
-      <BookInput
-          v-for="(config, name) in schema.fields"
-          :key="name"
-          :label="config.spec.label"
-          :max="config.spec.meta?.max"
-          :name="name"
-          :placeholder="config.spec.meta?.placeholder"
-          :required="config.spec.presence === 'required'"
-          :type="config.spec.meta?.inputType || config.type">
-        {{ config.spec.meta?.disclaimer }}
-      </BookInput>
-      <div class="my-4">
-        <h2>References</h2>
-        <p>
-          Don’t hesitate to attach the photographs of works that I have already completed that you liked,
-          any images or illustrations that could help with designing.
-        </p>
-        <FileSelect name="references"/>
+    <div v-if="bookedSuccessfully">
+      <div class="rounded-lg shadow-lg border py-5 mt-5 border-green-500">
+        <p class="text-2xl">Thank you for your booking!</p>
+        <p class="text-lg">I'll be in touch shortly</p>
+        <Heart class="h-20 m-auto mt-5"/>
       </div>
-      <Button text="Book now" @click="bookBtnClicked(values)"/>
-    </Form>
+    </div>
+    <div v-else>
+      <p>
+        If you want to sign up for a session with me, you must fill out this form.
+        I will contact you back by e-mail to clarify additional information if needed and with information about price
+        and
+        my availability.
+      </p>
+      <p class="text-gray-400 mt-2">
+        Please understand that I can decline your idea if it doesn’t suit my style of drawing and/or tattooing.
+      </p>
+      <Form ref="form" v-slot="{values}" :initial-values="initialValues" :validation-schema="schema">
+        <BookInput
+            v-for="(config, name) in schema.fields"
+            :key="name"
+            :label="config.spec.label"
+            :max="config.spec.meta?.max"
+            :name="name"
+            :placeholder="config.spec.meta?.placeholder"
+            :required="config.spec.presence === 'required'"
+            :type="config.spec.meta?.inputType || config.type"
+            @change="valueChanged(values)">
+          {{ config.spec.meta?.disclaimer }}
+        </BookInput>
+        <div class="my-4">
+          <h2>References</h2>
+          <p>
+            Don’t hesitate to attach the photographs of works that I have already completed that you liked,
+            any images or illustrations that could help with designing.
+          </p>
+          <FileSelect name="references"/>
+        </div>
+        <Button :disabled="isInvalid" :loading="isWaiting" @click="bookBtnClicked(values)">
+          Book now
+        </Button>
+      </Form>
+    </div>
   </section>
 </template>
 
 <script>
+import {inject, ref} from 'vue'
+import * as yup from 'yup';
+import {useReCaptcha} from 'vue-recaptcha-v3'
+import axios from 'axios'
+
 import BookInput from './BookInput.vue'
 import FileSelect from "./FileSelect.vue";
 import Button from "./Button.vue";
 import {Form} from 'vee-validate';
-import * as yup from 'yup';
+import Heart from "./icons/Heart.vue";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 
@@ -59,11 +77,10 @@ function testAge(dob) {
   return dobDate < eighteenYearsAgoDate()
 }
 
-import {inject, ref} from 'vue'
 
 export default {
   name: "Book",
-  components: {BookInput, FileSelect, Button, Form},
+  components: {BookInput, FileSelect, Button, Form, Heart},
   setup() {
     const bookRef = ref(null)
     const smoothScroll = inject('smoothScroll')
@@ -73,8 +90,18 @@ export default {
         hash: '#book'
       })
     }
+    const {executeRecaptcha, recaptchaLoaded} = useReCaptcha()
 
-    return {bookRef, scrollToBook}
+    const recaptcha = async () => {
+      await recaptchaLoaded()
+      await executeRecaptcha('booking')
+    }
+
+    const isWaiting = ref(false)
+    const isInvalid = ref(true)
+    const bookedSuccessfully = ref(false)
+
+    return {bookRef, scrollToBook, recaptcha, isWaiting, isInvalid, bookedSuccessfully}
   },
   data() {
     const maxDate = getMaxDate()
@@ -105,15 +132,28 @@ export default {
     async bookBtnClicked(values) {
       const {valid} = await this.$refs.form.validate()
       if (valid) {
-        console.log('valid', values)
+        this.loading = true
+        this.disabled = true
+        try {
+          await this.recaptcha()
+          await axios.post("https://heartpoke.co.uk/book", values)
+          this.bookedSuccessfully = true
+        } catch {
+          // this.$toast.error("Something went wrong. Try again later")
+        } finally {
+          this.loading = false
+          this.disabled = false
+        }
       } else {
         this.scrollToBook()
       }
+    },
+    valueChanged(currentValues) {
+      this.isInvalid = !this.schema.isValidSync(currentValues)
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
-
 </style>
