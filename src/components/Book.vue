@@ -1,7 +1,6 @@
 <template>
   <section id="book" ref="bookRef" class="mx-7 mt-5">
-    <h1 class="my-10">Book</h1>
-    <div v-if="bookedSuccessfully">
+    <div v-if="bookedSuccessfully" class="my-20">
       <div class="rounded-lg shadow-lg border py-5 mt-5 border-green-500">
         <p class="text-2xl">Thank you for your booking!</p>
         <p class="text-lg">I'll be in touch shortly</p>
@@ -9,6 +8,7 @@
       </div>
     </div>
     <div v-else>
+      <h1 class="my-10">Book</h1>
       <p>
         If you want to sign up for a session with me, you must fill out this form.
         I will contact you back by e-mail to clarify additional information if needed and with information about price
