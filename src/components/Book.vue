@@ -1,5 +1,5 @@
 <template>
-  <section id="book" ref="bookRef" class="mx-7 my-5">
+  <section id="book" ref="bookRef" class="mx-7 mt-5">
     <h1 class="my-10">Book</h1>
     <div v-if="bookedSuccessfully">
       <div class="rounded-lg shadow-lg border py-5 mt-5 border-green-500">
@@ -42,6 +42,10 @@
         <Button :disabled="isInvalid" :loading="isWaiting" @click="bookBtnClicked(values)">
           Book now
         </Button>
+        <div :class="{ninja: !bookingFailed}" class="text-red-500 mt-5">
+          <p class="text-2xl">Something went wrong :(</p>
+          <p>Try again in a couple of minutes</p>
+        </div>
       </Form>
     </div>
   </section>
@@ -61,6 +65,7 @@ import {Form} from 'vee-validate';
 import Heart from "./icons/Heart.vue";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+let bookingFailedTimeout
 
 function eighteenYearsAgoDate() {
   const d = new Date()
@@ -109,8 +114,9 @@ export default {
     const isWaiting = ref(false)
     const isInvalid = ref(false)
     const bookedSuccessfully = ref(false)
+    const bookingFailed = ref(false)
 
-    return {bookRef, scrollToBook, recaptcha, isWaiting, isInvalid, bookedSuccessfully}
+    return {bookRef, scrollToBook, recaptcha, isWaiting, isInvalid, bookedSuccessfully, bookingFailed}
   },
   data() {
     const maxDate = getMaxDate()
@@ -152,10 +158,13 @@ export default {
             params.references.push(b64)
           }
 
-          await axios.post("https://heartpoke.co.uk/book", params)
+          const {data} = await axios.post("https://heartpoke.co.uk/book", params)
+          if (data.statusCode !== 200) {
+            throw data
+          }
           this.bookedSuccessfully = true
         } catch {
-          // this.$toast.error("Something went wrong. Try again later")
+          this.showError()
         } finally {
           this.isWaiting = false
           this.isInvalid = false
@@ -166,10 +175,24 @@ export default {
     },
     valueChanged(currentValues) {
       this.isInvalid = !this.schema.isValidSync(currentValues)
+    },
+    showError() {
+      this.bookingFailed = true
+      if (bookingFailedTimeout) {
+        clearTimeout(bookingFailedTimeout)
+      }
+      bookingFailedTimeout = setTimeout(() => {
+        this.bookingFailed = false
+      }, 5000)
     }
   },
 }
 </script>
 
 <style scoped>
+.ninja {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 300ms, opacity 300ms;
+}
 </style>
