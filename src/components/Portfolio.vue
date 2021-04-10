@@ -4,6 +4,11 @@
     <div v-for="image in thumbs" :key="image" class="agile__slide" @click="showLightbox">
       <img :alt="image" :src="image">
     </div>
+    <div class="agile__slide">
+      <a href="https://youtu.be/z9E5BgnNAVU" target="_blank">
+        <img src="../assets/video_preview_slide.jpeg" alt="Tattoo Proccess">
+      </a>
+    </div>
   </Carousel>
   <VueEasyLightBox :imgs="images" :index="index" :move-disabled="true" :visible="lightboxVisible" @hide="hideLightbox"
                    @on-index-change="slideChanged"/>
