@@ -3,9 +3,10 @@
     <h1 class="my-10">Book</h1>
 
     <div v-if="isBookingClosed" class="text-xl">
-      <p class="text-3xl mb-3">Hey!</p>
-      <p>Thank you for being interested in my art! Unfortunately booking is closed for the moment (consultations are also unavailable). Please wait for the updates in my Instagram</p>
-      <p class="text-gray-700 mt-5">With love, Katie 💜</p>
+      <p>Thank you for being interested in my art! Unfortunately booking is closed at the moment (consultations are also unavailable).
+        Please wait for the updates in my <a href="https://www.instagram.com/heart.poke/" target="_blank" class="text-pink-700 underline">Instagram</a>
+      </p>
+      <p class="mt-5 text-pink-600">With love, Katie 💖</p>
     </div>
     <div v-else-if="bookedSuccessfully" class="my-20">
       <div class="rounded-lg shadow-lg border py-5 mt-5 border-pink-700">
