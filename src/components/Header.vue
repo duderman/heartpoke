@@ -1,11 +1,11 @@
 <template>
-<section id="header" class="h-screen w-screen bg-cover bg-center flex flex-col items-center">
-  <video poster="../assets/header-bg.jpeg" class="absolute h-full object-cover w-full" autoplay muted loop>
+<section id="header" class="w-screen bg-cover bg-center flex flex-col items-center">
+  <video poster="../assets/header-bg.jpeg" class="absolute h-full object-cover w-full" autoplay muted loop playsinline>
     <source src="../assets/header-bg.mp4" type="video/mp4">
   </video>
-  <div class="self-stretch mt-auto">
-    <h1 class="text-white uppercase stroke-1 with-stroke" data-aos="fade-down">Heart.Poke</h1>
-    <h2 class="font-medium text-gray-200 mt-2 p-2 lowercase with-stroke lighter" data-aos="fade-down">Handpoke tattoo artist</h2>
+  <div class="self-stretch mt-auto text-white">
+    <h1 class="uppercase stroke-1 with-stroke" data-aos="fade-down">Heart.Poke</h1>
+    <h2 class="font-medium mt-2 p-2 lowercase with-stroke lighter" data-aos="fade-down">Handpoke tattoo artist</h2>
     <Button class="mt-5 uppercase" data-aos="fade-up" url="#book">
       Book now
     </Button>
@@ -20,7 +20,11 @@ import ArrowDown from './ArrowDown.vue'
 
 export default {
   name: "Header",
-  components: {Button, ArrowDown}
+  components: {Button, ArrowDown},
+  mounted() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
 }
 </script>
 
@@ -34,5 +38,10 @@ export default {
 .with-stroke.lighter {
   --stroke-opacity: 0.1;
   --stroke-width: 1px;
+}
+
+#header {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 </style>
