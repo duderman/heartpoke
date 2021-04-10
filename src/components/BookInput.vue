@@ -78,4 +78,9 @@ textarea {
 input {
   @apply h-10
 }
+
+input,textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
 </style>
