@@ -432,7 +432,6 @@ export default {
 .agile__nav-button {
   background: transparent;
   border: none;
-  color: #059669;
   cursor: pointer;
   font-size: 24px;
   height: 100%;
@@ -440,6 +439,7 @@ export default {
   top: 0;
   transition-duration: 0.3s;
   width: 80px;
+  @apply text-pink-700;
 }
 
 .agile__nav-button--prev {

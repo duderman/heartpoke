@@ -57,13 +57,20 @@ export default {
   },
   data() {
     return {
-      classes: "mt-2 w-full rounded h-10 text-gray-700 px-3"
+      classes: "mt-2 w-full rounded-lg h-10 text-gray-700 px-3 shadow-lg border"
     }
   }
 }
 </script>
 
 <style scoped>
+input:focus,textarea:focus {
+  @apply outline-none;
+  @apply border-pink-700;
+  --tw-shadow: 0 10px 15px -3px rgba(183, 26, 92, 0.2), 0 4px 6px -2px rgba(183, 26, 92, 0.1);
+  --tw-border-opacity: 0.3;
+}
+
 textarea {
   @apply h-40
 }

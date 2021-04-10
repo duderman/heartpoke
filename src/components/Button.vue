@@ -1,5 +1,5 @@
 <template>
-  <a :class="{'bg-gray-500 cursor-not-allowed': disabled, 'bg-green-600 cursor-pointer': !disabled}" :href="url"
+  <a :class="{'bg-gray-500 cursor-not-allowed': disabled, 'bg-pink-700 cursor-pointer': !disabled}" :href="url"
      class="rounded px-4 py-3 text-white font-bold inline-block inline-flex items-center" @click="onClick">
     <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
          xmlns="http://www.w3.org/2000/svg">
