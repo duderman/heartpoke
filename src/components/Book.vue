@@ -1,7 +1,7 @@
 <template>
   <section id="book" ref="bookRef" class="mx-7 mt-5">
     <div v-if="bookedSuccessfully" class="my-20">
-      <div class="rounded-lg shadow-lg border py-5 mt-5 border-green-500">
+      <div class="rounded-lg shadow-lg border py-5 mt-5 border-pink-700">
         <p class="text-2xl">Thank you for your booking!</p>
         <p class="text-lg">I'll be in touch shortly</p>
         <Heart class="h-20 m-auto mt-5"/>
@@ -15,7 +15,7 @@
         and
         my availability.
       </p>
-      <p class="text-gray-400 mt-2">
+      <p class="text-gray-500 mt-2">
         Please understand that I can decline your idea if it doesn’t suit my style of drawing and/or tattooing.
       </p>
       <Form ref="form" v-slot="{values}" :initial-values="initialValues" :validation-schema="schema">
@@ -62,7 +62,7 @@ import FileSelect from "./FileSelect.vue";
 import Button from "./Button.vue";
 import {Form} from 'vee-validate';
 
-import Heart from "./icons/Heart.vue";
+import Heart from "./HeartIcon.vue";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 let bookingFailedTimeout
@@ -130,7 +130,7 @@ export default {
           .label("Date of Birth"),
       email: yup.string().required().email().label("Your Email").meta({placeholder: 'email@example.com'}),
       placement: yup.string().required().label("Tattoo Placement").meta({placeholder: 'Shoulder, Ankle, etc'}),
-      size: yup.number().required().label("Approximate Size (in cm)"),
+      size: yup.string().required().label("Approximate Size (in cm)").meta({placeholder: '5-7'}),
       description: yup.string().required().label("Tattoo description").meta({
         inputType: 'textarea',
         disclaimer: descriptionDisclaimer

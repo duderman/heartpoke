@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3">
     <label :for="name"> {{ label }}<span v-if="required"> *</span></label>
-    <p class="my-1 text-gray-300">
+    <p class="my-1 text-gray-500">
       <slot/>
     </p>
     <Field v-slot="{ field, handleChange }" :name="name">
