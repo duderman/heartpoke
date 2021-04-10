@@ -138,8 +138,7 @@ export default {
       comments: yup.string().label("Additional Comments").meta({inputType: 'textarea'}),
     });
     const initialValues = {
-      dob: maxDate,
-      size: 5
+      dob: maxDate
     }
     return {schema, initialValues}
   },
