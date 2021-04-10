@@ -15,17 +15,17 @@ const app = createApp(App)
   .use(VueEasyLightBox)
   .use(VueReCaptcha, {siteKey: "6LdzI5caAAAAABGKERpWx2URDf9Tye0KE2odzJVB"})
 
-// const airbrake = new Notifier({
-//   environment: 'production',
-//   projectId: 328313,
-//   projectKey: '8baa31e65729a99d9aa04b72ef8dd9ee'
-// });
-//
-// app.config.errorHandler = (error, _vm, info) => {
-//   airbrake.notify({
-//     error,
-//     params: {info}
-//   });
-// }
+const airbrake = new Notifier({
+  environment: 'production',
+  projectId: 329006,
+  projectKey: '04e2d81e6cbf5c8c68380135ea20b213'
+});
+
+app.config.errorHandler = (error, _vm, info) => {
+  airbrake.notify({
+    error,
+    params: {info}
+  });
+}
 
 app.mount('#app')
