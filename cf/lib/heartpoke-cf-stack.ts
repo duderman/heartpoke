@@ -24,10 +24,19 @@ export class HeartpokeCfStack extends cdk.Stack {
 
     const httpApi = new apigatewayv2.HttpApi(this, "HeartpokeApiGateway");
 
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+
+    if (!ADMIN_EMAIL) {
+      throw "ADMIN_EMAIL must be set"
+    }
+
     const bookLambda = new Function(this, 'BookLambda', {
       runtime: Runtime.GO_1_X,
       handler: 'main',
       code: Code.fromAsset(path.join(__dirname, 'book')),
+      environment: {
+        "ADMIN_EMAIL": ADMIN_EMAIL
+      }
     })
 
     bookLambda.addToRolePolicy(new iam.PolicyStatement({
