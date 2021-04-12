@@ -33,11 +33,10 @@ export class HeartpokeCfStack extends cdk.Stack {
     const bookLambda = new Function(this, 'BookLambda', {
       runtime: Runtime.GO_1_X,
       handler: 'main',
-      code: Code.fromAsset(path.join(__dirname, 'book')),
-      environment: {
-        "ADMIN_EMAIL": ADMIN_EMAIL
-      }
+      code: Code.fromAsset(path.join(__dirname, 'book'))
     })
+
+    bookLambda.addEnvironment('ADMIN_EMAIL', ADMIN_EMAIL)
 
     bookLambda.addToRolePolicy(new iam.PolicyStatement({
       sid: 'SESSendEmailPolicy',
@@ -97,7 +96,7 @@ export class HeartpokeCfStack extends cdk.Stack {
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
       viewerCertificate: {
-        aliases: ['stg.heartpoke.co.uk'],
+        aliases: ['stg.heartpoke.co.uk', 'heartpoke.co.uk'],
         props: {
           acmCertificateArn: 'arn:aws:acm:us-east-1:543420290672:certificate/2cca1708-ae60-4665-a108-419f97d1c932',
           sslSupportMethod: 'sni-only',
