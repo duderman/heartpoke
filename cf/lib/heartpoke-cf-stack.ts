@@ -96,9 +96,9 @@ export class HeartpokeCfStack extends cdk.Stack {
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
       viewerCertificate: {
-        aliases: ['stg.heartpoke.co.uk', 'heartpoke.co.uk'],
+        aliases: ['heartpoke.co.uk'],
         props: {
-          acmCertificateArn: 'arn:aws:acm:us-east-1:543420290672:certificate/2cca1708-ae60-4665-a108-419f97d1c932',
+          acmCertificateArn: 'arn:aws:acm:us-east-1:543420290672:certificate/97586151-8b39-4b70-8363-72ea28ca47f9',
           sslSupportMethod: 'sni-only',
           minimumProtocolVersion: 'TLSv1.2_2019'
         }
