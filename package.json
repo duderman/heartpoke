@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "deploy": "aws s3 sync ./dist s3://heartpoke"
+    "build": "vite build --outDir cf/lib/frontend"
   },
   "dependencies": {
     "@airbrake/browser": "^2.1.3",
