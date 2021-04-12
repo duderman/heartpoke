@@ -166,7 +166,7 @@ export default {
             params.references.push(b64)
           }
 
-          const {data} = await axios.post("https://heartpoke.co.uk/book", params)
+          const {data} = await axios.post("https://heartpoke.co.uk/api/book", params)
           if (data.statusCode !== 200) {
             throw data
           }
