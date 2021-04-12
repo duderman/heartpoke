@@ -4,7 +4,7 @@
 
     <div v-if="isBookingClosed" class="text-xl">
       <p>Thank you for being interested in my art! Unfortunately booking is closed at the moment (consultations are also unavailable).
-        Please wait for the updates in my <a href="https://www.instagram.com/heart.poke/" target="_blank" class="text-pink-700 underline">Instagram</a>
+        Please wait for the updates in my <Link url="https://www.instagram.com/heart.poke/">Instagram</Link>
       </p>
       <p class="mt-5 text-pink-600">With love, Katie 💖</p>
     </div>
@@ -67,6 +67,7 @@ import axios from 'axios'
 import BookInput from './BookInput.vue'
 import FileSelect from "./FileSelect.vue";
 import Button from "./Button.vue";
+import Link from "./Link.vue";
 import {Form} from 'vee-validate';
 
 import Heart from "./HeartIcon.vue";
@@ -101,7 +102,7 @@ function fileToBase64(file) {
 
 export default {
   name: "Book",
-  components: {BookInput, FileSelect, Button, Form, Heart},
+  components: {BookInput, FileSelect, Button, Form, Heart, Link},
   setup() {
     const bookRef = ref(null)
     const smoothScroll = inject('smoothScroll')

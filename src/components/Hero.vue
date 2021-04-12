@@ -9,8 +9,7 @@
       One day I decided that I need to change my life and to finally start doing what I love.
     </p>
     <p>
-      My life changing decision was to buy a tattoo course from <a href="https://www.instagram.com/lerahandpoke/"
-                                                                   target="_blank">@lerahandpoke</a>.
+      My life changing decision was to buy a tattoo course from <Link url="https://www.instagram.com/lerahandpoke/">@lerahandpoke</Link>.
       I fell in love with tattooing and since then I’m feeling that I found my passion, my place.
     </p>
     <p>
@@ -24,8 +23,11 @@
 </template>
 
 <script>
+import Link from './Link.vue'
+
 export default {
-  name: "Hero"
+  name: "Hero",
+  components: {Link}
 }
 </script>
 
@@ -45,9 +47,5 @@ p {
   @apply font-bold;
   @apply float-left;
   @apply mr-5;
-}
-
-a {
-  color: blue;
 }
 </style>
