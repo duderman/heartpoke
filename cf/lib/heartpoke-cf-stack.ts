@@ -18,7 +18,7 @@ export class HeartpokeCfStack extends cdk.Stack {
 
     const redirectLambda = new cloudfront.experimental.EdgeFunction(this, "RedirectLambda", {
       code: Code.fromAsset(path.join(__dirname, 'redirect')),
-      handler: "handler",
+      handler: "index.handler",
       runtime: Runtime.NODEJS_12_X,
     });
 
