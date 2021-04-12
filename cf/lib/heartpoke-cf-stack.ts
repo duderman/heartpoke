@@ -100,7 +100,7 @@ export class HeartpokeCfStack extends cdk.Stack {
         props: {
           acmCertificateArn: 'arn:aws:acm:us-east-1:543420290672:certificate/2cca1708-ae60-4665-a108-419f97d1c932',
           sslSupportMethod: 'sni-only',
-          minimumProtocolVersion: 'TLSv1.1_2016'
+          minimumProtocolVersion: 'TLSv1.2_2019'
         }
       },
       originConfigs: [
