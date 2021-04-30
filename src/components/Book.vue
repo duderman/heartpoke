@@ -123,7 +123,7 @@ export default {
     const isInvalid = ref(true)
     const bookedSuccessfully = ref(false)
     const bookingFailed = ref(false)
-    const isBookingClosed = true
+    const isBookingClosed = false
 
     return {bookRef, scrollToBook, recaptcha, isWaiting, isInvalid, bookedSuccessfully, bookingFailed, isBookingClosed}
   },
