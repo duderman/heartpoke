@@ -6,7 +6,7 @@
   <div class="self-stretch mt-auto text-white">
     <h1 data-aos="fade-down">Heart.Poke</h1>
     <h2 class="font-medium mt-2 p-2 lowercase with-stroke lighter" data-aos="fade-down">Handpoke tattoo artist</h2>
-    <Button class="mt-5 uppercase" data-aos="fade-up" url="#book">
+    <Button class="mt-5 uppercase book-btn" data-aos="fade-up" url="#book">
       Book now
     </Button>
   </div>
@@ -32,5 +32,8 @@ export default {
 #header {
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
+}
+.book-btn {
+  box-shadow: 0px 0px 1px 2px white;
 }
 </style>
