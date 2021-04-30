@@ -33,7 +33,8 @@ export class HeartpokeCfStack extends cdk.Stack {
     const bookLambda = new Function(this, 'BookLambda', {
       runtime: Runtime.GO_1_X,
       handler: 'main',
-      code: Code.fromAsset(path.join(__dirname, 'book'))
+      code: Code.fromAsset(path.join(__dirname, 'book')),
+      timeout: Duration.minutes(1)
     })
 
     bookLambda.addEnvironment('ADMIN_EMAIL', ADMIN_EMAIL)
