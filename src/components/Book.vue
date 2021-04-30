@@ -72,6 +72,8 @@ import {Form} from 'vee-validate';
 
 import Heart from "./HeartIcon.vue";
 
+import {airbrake} from "../main";
+
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 let bookingFailedTimeout
 
@@ -94,7 +96,7 @@ function testAge(dob) {
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => resolve(reader.result)
+    reader.onloadend = () => resolve(reader.result)
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
@@ -139,7 +141,7 @@ export default {
           .label("Date of Birth"),
       email: yup.string().required().email().label("Your Email").meta({placeholder: 'email@example.com'}),
       placement: yup.string().required().label("Tattoo Placement").meta({placeholder: 'Shoulder, Ankle, etc'}),
-      size: yup.string().required().label("Approximate Size (in cm)").meta({placeholder: '5-7'}),
+      size: yup.string().required().label("Approximate Size (in cm)"),
       description: yup.string().required().label("Tattoo description").meta({
         inputType: 'textarea',
         disclaimer: descriptionDisclaimer
@@ -161,17 +163,18 @@ export default {
           await this.recaptcha()
 
           let params = {...values, references: []}
-          for (const f of this.$refs.referencesInput.files) {
+          const files = [...this.$refs.referencesInput.files]
+          for (const f of files) {
             const b64 = await fileToBase64(f)
             params.references.push(b64)
           }
 
-          const {data} = await axios.post("https://heartpoke.co.uk/api/book", params)
-          if (data.statusCode !== 200) {
-            throw data
-          }
+          await axios.post("https://heartpoke.co.uk/api/book", params)
           this.bookedSuccessfully = true
-        } catch {
+        } catch (e) {
+          debugger
+          console.error(e)
+          airbrake.notify(e)
           this.showError()
         } finally {
           this.isWaiting = false
