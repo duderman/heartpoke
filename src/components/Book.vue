@@ -96,9 +96,9 @@ function testAge(dob) {
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = reject
-    reader.readAsDataURL(file)
+    reader.onload = (evt) => resolve(evt.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   })
 }
 
