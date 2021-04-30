@@ -32,13 +32,13 @@ export default {
 <style>
 h1 {
   text-transform: uppercase;
-  text-shadow: 2px 2px deeppink;
+  text-shadow: 2px 2px rgb(190, 24, 93);
   color: white;
 }
 h1,.with-stroke {
   --stroke-opacity: 0.3;
   --stroke-width: 2px;
-  -webkit-text-stroke: var(--stroke-width) rgba(190,24,93, var(--stroke-opacity));
+  -webkit-text-stroke: var(--stroke-width) rgba(190, 24, 93, var(--stroke-opacity));
 }
 
 .with-stroke.lighter {
