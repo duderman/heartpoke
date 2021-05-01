@@ -56,6 +56,43 @@ export class HeartpokeCfStack extends cdk.Stack {
       integration: lambdaIntegration,
     });
 
+    const referencesBucket = new s3.Bucket(this, "ReferencesBucket", {
+      removalPolicy: RemovalPolicy.DESTROY,
+      publicReadAccess: true,
+      cors: [
+        {
+          allowedOrigins: ["*"],
+          allowedHeaders: ["Content-Type"],
+          allowedMethods: [s3.HttpMethods.PUT]
+        }
+      ]
+    })
+
+    const presignLambda = new Function(this, 'PresignLambda', {
+      runtime: Runtime.GO_1_X,
+      handler: 'main',
+      code: Code.fromAsset(path.join(__dirname, 'presign'))
+    })
+
+    presignLambda.addEnvironment('S3_BUCKET', referencesBucket.bucketName)
+
+    presignLambda.addToRolePolicy(new iam.PolicyStatement({
+      sid: 'S3PresignPolicy',
+      effect: Effect.ALLOW,
+      actions: ['s3:PutObject', 's3:PutObjectACL'],
+      resources: [`${referencesBucket.bucketArn}/*`]
+    }))
+
+    const presignLambdaIntegration = new LambdaProxyIntegration({
+      handler: presignLambda,
+    });
+
+    httpApi.addRoutes({
+      path: "/api/presign",
+      methods: [apigatewayv2.HttpMethod.POST, apigatewayv2.HttpMethod.OPTIONS],
+      integration: presignLambdaIntegration,
+    });
+
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(
       this,
       "CloudFrontOAI",
