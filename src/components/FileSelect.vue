@@ -13,7 +13,8 @@
       </svg>
       <p class="mt-2 text-base leading-normal">Select references</p>
       <p class="text-gray-500 text-sm">(up to 3 files)</p>
-      <p v-if="tooManyFiles" class="text-red-800">Sorry that's too many files</p>
+      <p v-if="tooManyFiles" class="text-red-800 mt-3">Sorry that's too many files</p>
+      <p v-if="filesAreTooBig" class="text-red-800 mt-3">Your images are way too big. Maximum size is 6MB for all of the references</p>
       <input accept="image/*" class="hidden" multiple type='file' v-on:change="setFiles"/>
     </label>
   </div>
@@ -23,12 +24,14 @@
 import {ref} from 'vue'
 
 const MAX_FILES = 3
+const SIX_MB = 6 * 1024 * 1024
 
 export default {
   name: "FileSelect",
   setup() {
     const tooManyFiles = ref(false)
-    return {tooManyFiles}
+    const filesAreTooBig = ref(false)
+    return {tooManyFiles, filesAreTooBig}
   },
   data() {
     return {
@@ -37,11 +40,17 @@ export default {
   },
   methods: {
     setFiles: function (event) {
+      this.tooManyFiles = false
+      this.filesAreTooBig = false
+
       const files = event.target.files;
       if (files.length > MAX_FILES) {
         this.tooManyFiles = true
       } else {
-        this.tooManyFiles = false
+        const totalSize = [...files].reduce((acc, file) => { return acc + file.size }, 0)
+        if (totalSize > SIX_MB) {
+          return this.filesAreTooBig = true
+        }
         this.files = files
       }
     },
