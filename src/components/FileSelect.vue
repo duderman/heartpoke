@@ -1,7 +1,8 @@
 <template>
+  <div ref="test">asdasdasd</div>
   <div v-if="files.length > 0" class="rounded-lg shadow-lg border py-5 mt-5">
     <h3>Files Selected: </h3>
-    <div v-for="file of files" class="my-2">{{ file.name }}</div>
+    <div v-for="file of files" class="my-2 filename" :ref="file.name">{{ file.name }}</div>
     <a class="underline cursor-pointer" v-on:click="clearFiles">Clear selection ⒳</a>
   </div>
   <div v-else class="flex w-full items-center justify-center bg-white mt-4">
@@ -13,8 +14,8 @@
       </svg>
       <p class="mt-2 text-base leading-normal">Select references</p>
       <p class="text-gray-500 text-sm">(up to 3 files)</p>
-      <p v-if="tooManyFiles" class="text-red-800 mt-3">Sorry that's too many files</p>
-      <p v-if="filesAreTooBig" class="text-red-800 mt-3">Your images are way too big. Maximum size is 6MB for all of the references</p>
+      <p v-if="tooManyFiles" class="text-red-800">Sorry that's too many files</p>
+      <p v-if="uploadError" class="text-red-800">Sorry. Something went wrong when uploading. Try again in a couple of minutes</p>
       <input accept="image/*" class="hidden" multiple type='file' v-on:change="setFiles"/>
     </label>
   </div>
@@ -22,45 +23,96 @@
 
 <script>
 import {ref} from 'vue'
+import axios from "axios";
+import {airbrake} from "../main";
 
 const MAX_FILES = 3
-const SIX_MB = 6 * 1024 * 1024
+const PRESIGN_API_PATH = "https://heartpoke.co.uk/api/presign"
+
+const sendImageToS3 = (img, uploadUrl, onProgress) => {
+  const xhr = new XMLHttpRequest()
+  xhr.open('PUT', uploadUrl)
+  xhr.upload.addEventListener('progress', e => onProgress(Math.round(e.loaded / e.total * 90) + 10))
+  xhr.setRequestHeader('Content-Type', 'application/octet-stream')
+  return new Promise((resolve, reject) => {
+    xhr.onload = () => (xhr.status - 200) < 100 ? resolve() : reject(new Error('Failed to upload'))
+    xhr.onerror = () => reject(new Error('Failed to upload'))
+    xhr.send(img)
+  })
+}
+
+const getS3Url = async (img) => {
+  const matches = img.name.match(/\.([a-zA-Z0-9]+)$/)
+  const ext = (matches) ? matches[1] : 'jpg'
+  const presignResponse = await axios.post(PRESIGN_API_PATH, { ext })
+  return presignResponse.data.url
+}
+
+const uploadImageToS3 = async (img, onProgress) => {
+  onProgress(5)
+  const uploadUrl = await getS3Url(img)
+  onProgress(15)
+  await sendImageToS3(img, uploadUrl, onProgress)
+  onProgress(100)
+  const url = new URL(uploadUrl)
+  return `${url.protocol}//${url.host}${url.pathname}`
+}
 
 export default {
   name: "FileSelect",
   setup() {
     const tooManyFiles = ref(false)
-    const filesAreTooBig = ref(false)
-    return {tooManyFiles, filesAreTooBig}
+    const uploadError = ref(false)
+    return {tooManyFiles, uploadError}
   },
   data() {
     return {
-      files: []
+      files: [],
+      urls: []
     }
   },
   methods: {
     setFiles: function (event) {
-      this.tooManyFiles = false
-      this.filesAreTooBig = false
+      this.uploadError = false
 
       const files = event.target.files;
       if (files.length > MAX_FILES) {
         this.tooManyFiles = true
       } else {
-        const totalSize = [...files].reduce((acc, file) => { return acc + file.size }, 0)
-        if (totalSize > SIX_MB) {
-          return this.filesAreTooBig = true
-        }
+        this.tooManyFiles = false
         this.files = files
+        this.$nextTick(this.uploadFiles)
       }
     },
     clearFiles: function () {
       this.files = []
+      this.urls = []
+    },
+    uploadFiles: async function () {
+      this.$emit('uploading-started')
+      try {
+        for (const file of this.files) {
+          const imgUrl = await uploadImageToS3(file, (percentage) => {
+            this.$refs[file.name].style.background = `linear-gradient(to right, black ${percentage}%, #c3c2c2 ${percentage + 1}%)`
+          })
+          this.urls.push(imgUrl)
+        }
+      } catch (e) {
+        this.uploadError = true
+        this.clearFiles()
+        console.error(e)
+        airbrake.notify(e)
+      } finally {
+        this.$emit('uploading-finished')
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-
+.filename {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
 </style>

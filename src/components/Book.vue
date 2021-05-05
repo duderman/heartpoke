@@ -44,9 +44,9 @@
             Don’t hesitate to attach the photographs of works that I have already completed that you liked,
             any images or illustrations that could help with designing.
           </p>
-          <FileSelect ref="referencesInput" name="references"/>
+          <FileSelect ref="referencesInput" name="references" @uploading-started="uploadingStarted" @uploading-finished="uploadingFinished"/>
         </div>
-        <Button :disabled="isInvalid" :loading="isWaiting" @click="bookBtnClicked(values)">
+        <Button :disabled="isInvalid || isWaiting" :loading="isWaiting" @click="bookBtnClicked(values)">
           Book now
         </Button>
         <div :class="{ninja: !bookingFailed}" class="text-red-500 mt-5">
@@ -91,15 +91,6 @@ function getMaxDate() {
 function testAge(dob) {
   const dobDate = new Date(dob)
   return dobDate < eighteenYearsAgoDate()
-}
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = (evt) => resolve(evt.target.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  })
 }
 
 export default {
@@ -162,17 +153,12 @@ export default {
         try {
           await this.recaptcha()
 
-          let params = {...values, references: []}
-          const files = [...this.$refs.referencesInput.files]
-          for (const f of files) {
-            const b64 = await fileToBase64(f)
-            params.references.push(b64)
-          }
+          const references = [...this.$refs.referencesInput.urls]
+          let params = {...values, references}
 
           await axios.post("https://heartpoke.co.uk/api/book", params)
           this.bookedSuccessfully = true
         } catch (e) {
-          debugger
           console.error(e)
           airbrake.notify(e)
           this.showError()
@@ -195,6 +181,12 @@ export default {
       bookingFailedTimeout = setTimeout(() => {
         this.bookingFailed = false
       }, 5000)
+    },
+    uploadingStarted() {
+      this.isWaiting = true
+    },
+    uploadingFinished() {
+      this.isWaiting = false
     }
   },
 }
