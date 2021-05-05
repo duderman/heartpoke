@@ -56,6 +56,8 @@ export class HeartpokeCfStack extends cdk.Stack {
       integration: lambdaIntegration,
     });
 
+    const SIX_MONTHS = 31 * 6
+
     const referencesBucket = new s3.Bucket(this, "ReferencesBucket", {
       removalPolicy: RemovalPolicy.DESTROY,
       publicReadAccess: true,
@@ -65,7 +67,10 @@ export class HeartpokeCfStack extends cdk.Stack {
           allowedHeaders: ["Content-Type"],
           allowedMethods: [s3.HttpMethods.PUT]
         }
-      ]
+      ],
+      lifecycleRules: [{
+        expiration: cdk.Duration.days(SIX_MONTHS)
+      }]
     })
 
     const presignLambda = new Function(this, 'PresignLambda', {
