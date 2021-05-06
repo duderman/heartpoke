@@ -44,7 +44,7 @@
             Don’t hesitate to attach the photographs of works that I have already completed that you liked,
             any images or illustrations that could help with designing.
           </p>
-          <FileSelect ref="referencesInput" name="references" @uploading-started="uploadingStarted" @uploading-finished="uploadingFinished"/>
+          <FileSelect ref="referencesInput" @uploading-started="uploadingStarted" @uploading-finished="uploadingFinished"/>
         </div>
         <Button :disabled="isInvalid || isWaiting" :loading="isWaiting" @click="bookBtnClicked(values)">
           Book now

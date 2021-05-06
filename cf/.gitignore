@@ -12,6 +12,6 @@ cdk.out
 .parcel-cache
 
 lib/book
-lib/presign
+lib/upload
 lib/frontend
 yarn-error.log

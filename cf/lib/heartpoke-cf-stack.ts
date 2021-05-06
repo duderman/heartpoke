@@ -52,7 +52,7 @@ export class HeartpokeCfStack extends cdk.Stack {
 
     httpApi.addRoutes({
       path: "/api/book",
-      methods: [apigatewayv2.HttpMethod.POST],
+      methods: [apigatewayv2.HttpMethod.POST, apigatewayv2.HttpMethod.OPTIONS],
       integration: lambdaIntegration,
     });
 
@@ -60,20 +60,20 @@ export class HeartpokeCfStack extends cdk.Stack {
 
     const referencesBucket = new s3.Bucket(this, "ReferencesBucket", {
       removalPolicy: RemovalPolicy.DESTROY,
-      publicReadAccess: true,
+      lifecycleRules: [{
+        expiration: cdk.Duration.days(SIX_MONTHS)
+      }],
       cors: [
         {
           allowedOrigins: ["*"],
-          allowedHeaders: ["Content-Type"],
-          allowedMethods: [s3.HttpMethods.PUT]
-        }
+          allowedMethods: [s3.HttpMethods.PUT],
+          allowedHeaders: ['Content-Type'],
+          maxAge: 3000,
+        },
       ],
-      lifecycleRules: [{
-        expiration: cdk.Duration.days(SIX_MONTHS)
-      }]
     })
 
-    const presignLambda = new Function(this, 'PresignLambda', {
+    const presignLambda = new Function(this, 'UploadLambda', {
       runtime: Runtime.GO_1_X,
       handler: 'main',
       code: Code.fromAsset(path.join(__dirname, 'presign'))
@@ -82,7 +82,7 @@ export class HeartpokeCfStack extends cdk.Stack {
     presignLambda.addEnvironment('S3_BUCKET', referencesBucket.bucketName)
 
     presignLambda.addToRolePolicy(new iam.PolicyStatement({
-      sid: 'S3PresignPolicy',
+      sid: 'PresignPolicy',
       effect: Effect.ALLOW,
       actions: ['s3:PutObject', 's3:PutObjectACL'],
       resources: [`${referencesBucket.bucketArn}/*`]
@@ -95,7 +95,7 @@ export class HeartpokeCfStack extends cdk.Stack {
     httpApi.addRoutes({
       path: "/api/presign",
       methods: [apigatewayv2.HttpMethod.POST, apigatewayv2.HttpMethod.OPTIONS],
-      integration: presignLambdaIntegration,
+      integration: presignLambdaIntegration
     });
 
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(
@@ -107,15 +107,8 @@ export class HeartpokeCfStack extends cdk.Stack {
     );
 
     const websiteBucket = new s3.Bucket(this, "HeartpokeBucket", {
-      removalPolicy: RemovalPolicy.DESTROY, // Using destroy so when you delete this stack, we will remove the S3 bucket created as well
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      cors: [
-        {
-          allowedOrigins: ["*"],
-          allowedMethods: [s3.HttpMethods.GET],
-          maxAge: 3000,
-        },
-      ],
+      removalPolicy: RemovalPolicy.DESTROY,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL
     });
 
     // uploads index.html to s3 bucket
@@ -133,6 +126,15 @@ export class HeartpokeCfStack extends cdk.Stack {
       })
     );
 
+    referencesBucket.addToResourcePolicy(
+        new iam.PolicyStatement({
+          sid: "Grant Cloudfront Origin Access Identity access to S3 bucket with refs",
+          actions: ["s3:GetObject"],
+          resources: [referencesBucket.bucketArn + "/*"],
+          principals: [cloudfrontOAI.grantPrincipal],
+        })
+    );
+
     new cloudfront.CloudFrontWebDistribution(this, "HeartPokeDistribution", {
       comment: "CDN for HeartPoke App",
       defaultRootObject: "index.html",
@@ -148,19 +150,14 @@ export class HeartpokeCfStack extends cdk.Stack {
       },
       originConfigs: [
         {
-          // make sure your backend origin is first in the originConfigs list so it takes precedence over the S3 origin
           customOriginSource: {
             domainName: `${httpApi.httpApiId}.execute-api.${this.region}.amazonaws.com`,
           },
           behaviors: [
             {
-              pathPattern: "/api/*", // CloudFront will forward `/api/*` to the backend so make sure all your routes are prepended with `/api/`
+              pathPattern: "/api/*",
               allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
               defaultTtl: Duration.seconds(0),
-              forwardedValues: {
-                queryString: true,
-                headers: ["Authorization"], // By default CloudFront will not forward any headers through so if your API needs authentication make sure you forward auth headers across
-              },
             },
           ],
         },
@@ -173,15 +170,26 @@ export class HeartpokeCfStack extends cdk.Stack {
             {
               compress: true,
               isDefaultBehavior: true,
-              defaultTtl: Duration.seconds(0),
-              allowedMethods:
-                cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
               lambdaFunctionAssociations: [
                 {
                   lambdaFunction: redirectLambda.currentVersion,
                   eventType: LambdaEdgeEventType.ORIGIN_RESPONSE,
                 },
               ],
+            },
+          ],
+        },
+        {
+          s3OriginSource: {
+            s3BucketSource: referencesBucket,
+            originAccessIdentity: cloudfrontOAI,
+          },
+          behaviors: [
+            {
+              compress: true,
+              allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              pathPattern: "/references/*"
             },
           ],
         },

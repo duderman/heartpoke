@@ -29,33 +29,25 @@ import {airbrake} from "../main";
 const MAX_FILES = 3
 const PRESIGN_API_PATH = "https://heartpoke.co.uk/api/presign"
 
-const sendImageToS3 = (img, uploadUrl, onProgress) => {
-  const xhr = new XMLHttpRequest()
-  xhr.open('PUT', uploadUrl)
-  xhr.upload.addEventListener('progress', e => onProgress(Math.round(e.loaded / e.total * 90) + 10))
-  xhr.setRequestHeader('Content-Type', 'application/octet-stream')
-  return new Promise((resolve, reject) => {
-    xhr.onload = () => (xhr.status - 200) < 100 ? resolve() : reject(new Error('Failed to upload'))
-    xhr.onerror = () => reject(new Error('Failed to upload'))
-    xhr.send(img)
-  })
+const uploadToS3 = async (img, url, onProgress) => {
+  const options = {
+    headers: { 'Content-Type': img.type },
+    onUploadProgress: ({loaded, total}) => onProgress(Math.round(loaded / total * 90) + 10)
+  }
+  await axios.put(url, img, options)
 }
 
 const getS3Url = async (img) => {
   const matches = img.name.match(/\.([a-zA-Z0-9]+)$/)
-  const ext = (matches) ? matches[1] : 'jpg'
-  const presignResponse = await axios.post(PRESIGN_API_PATH, { ext })
-  return presignResponse.data.url
+  const extension = (matches) ? matches[1] : 'jpg'
+  const presignResponse = await axios.post(PRESIGN_API_PATH, { extension })
+  return presignResponse.data
 }
 
-const uploadImageToS3 = async (img, onProgress) => {
-  onProgress(5)
-  const uploadUrl = await getS3Url(img)
-  onProgress(15)
-  await sendImageToS3(img, uploadUrl, onProgress)
-  onProgress(100)
-  const url = new URL(uploadUrl)
-  return `${url.protocol}//${url.host}${url.pathname}`
+const uploadImage = async (img, onProgress) => {
+  const {url, key} = await getS3Url(img)
+  await uploadToS3(img, url, onProgress)
+  return `https://heartpoke.co.uk/${key}`
 }
 
 export default {
@@ -71,6 +63,7 @@ export default {
       urls: []
     }
   },
+  emits: ['uploading-started', 'uploading-finished'],
   methods: {
     setFiles: function (event) {
       this.uploadError = false
@@ -92,8 +85,8 @@ export default {
       this.$emit('uploading-started')
       try {
         for (const file of this.files) {
-          const imgUrl = await uploadImageToS3(file, (percentage) => {
-            this.$refs[file.name].style.background = `linear-gradient(to right, black ${percentage}%, #c3c2c2 ${percentage + 1}%)`
+          const imgUrl = await uploadImage(file, (percentage) => {
+            this.$refs[file.name].style.setProperty('--percentage', `${percentage}%`)
           })
           this.urls.push(imgUrl)
         }
@@ -112,6 +105,8 @@ export default {
 
 <style scoped>
 .filename {
+  --percentage: 1%;
+  background: rgba(0, 0, 0, 0) linear-gradient(to right, black var(--percentage), rgb(195, 194, 194) var(--percentage)) repeat scroll 0% 0%;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent;
 }
