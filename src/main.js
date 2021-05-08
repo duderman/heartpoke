@@ -16,9 +16,16 @@ const app = createApp(App)
   .use(VueReCaptcha, { siteKey: "6LdzI5caAAAAABGKERpWx2URDf9Tye0KE2odzJVB" });
 
 export const airbrake = new Notifier({
-  environment: "production",
+  environment: process.env.NODE_ENV,
   projectId: 329006,
   projectKey: "04e2d81e6cbf5c8c68380135ea20b213",
+});
+
+airbrake.addFilter((notice) => {
+  if (notice.context.environment !== "production") {
+    return null;
+  }
+  return notice;
 });
 
 app.config.errorHandler = (error, _vm, info) => {
