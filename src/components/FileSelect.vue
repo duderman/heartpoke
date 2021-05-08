@@ -68,7 +68,7 @@ export default {
     setFiles: function (event) {
       this.uploadError = false
 
-      const files = event.target.files;
+      const files = [...event.target.files];
       if (files.length > MAX_FILES) {
         this.tooManyFiles = true
       } else {
@@ -83,13 +83,14 @@ export default {
     },
     uploadFiles: async function () {
       this.$emit('uploading-started')
-      try {
-        for (const file of this.files) {
-          const imgUrl = await uploadImage(file, (percentage) => {
-            this.$refs[file.name].style.setProperty('--percentage', `${percentage}%`)
-          })
-          this.urls.push(imgUrl)
+      const promises = this.files.map(async (file) => {
+        const onProgress = (percentage) => {
+          this.$refs[file.name].style.setProperty('--percentage', `${percentage}%`)
         }
+        return await uploadImage(file, onProgress)
+      })
+      try {
+        this.urls = await Promise.all(promises)
       } catch (e) {
         this.uploadError = true
         this.clearFiles()
