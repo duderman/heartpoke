@@ -1,13 +1,26 @@
 <template>
-  <div class="rounded-lg shadow-lg border py-5 mt-5 bg-white flex w-full items-center justify-center">
+  <div
+    class="rounded-lg shadow-lg border py-5 mt-5 bg-white flex w-full items-center justify-center"
+  >
     <div v-if="files.length > 0" class="text-gray-500">
-      <h3>Files Selected: </h3>
-      <div v-for="file of files" class="my-2 filename" :ref="file.name">{{ file.name }}</div>
-      <a class="underline cursor-pointer hover:text-pink-700" v-on:click="clearFiles">
+      <h3>Files Selected:</h3>
+      <div
+        v-for="file of files"
+        :ref="file.name"
+        :key="file.name"
+        class="my-2 filename"
+      >
+        {{ file.name }}
+      </div>
+      <a
+        class="underline cursor-pointer hover:text-pink-700"
+        @click="clearFiles"
+      >
         Clear selection
         <div class="icon baseline">
           <svg viewBox="0 0 470 470">
-            <path d="M96.01,133.456c3.884,2.676,8.163,4.332,12.619,5.292c-5.324,99.039-15.803,202.436,20.416,296.978
+            <path
+              d="M96.01,133.456c3.884,2.676,8.163,4.332,12.619,5.292c-5.324,99.039-15.803,202.436,20.416,296.978
               c1.742,4.545,4.938,7.389,8.604,8.846c1.26,1.762,3.052,3.326,5.637,4.479c64.729,28.746,133.522,27.487,199.892,4.459
               c8.674-3.012,11.314-11.243,9.735-18.256c12.604-95.928,24.562-194.694,14.67-291.43c7.83-1.725,15.147-5.027,20.586-11.075
               c10.745-11.959,8.679-27.345,3.387-41.068c0.011-3.816-1.787-7.467-5.87-9.973c-1.62-1.254-3.544-2.127-5.596-2.59
@@ -24,127 +37,162 @@
               c0.295,1.018,0.538,2.054,0.746,3.093c0.016,0.23,0.031,0.475,0.057,0.833c0.02,0.536-0.021,1.077-0.041,1.612
               c-0.01,0.045-0.035,0.15-0.051,0.203c-0.314-0.053-2.468,1.498-1.59,1.331c-1.63,0.604-3.326,1.03-5.017,1.409
               c-0.808,0.183-1.874,0.312-3.082,0.406c-1.574-1.141-3.529-1.993-6.038-2.336c-75.291-10.336-150.897-9.422-226.528-3.499
-              c-1.364,0.109-2.595,0.406-3.761,0.779c-7.373-0.104-12.075-3.682-15.157-11.263C106.564,96.885,108.057,95.138,110.845,92.726z"/>
-            <path d="M186.387,186.935c-0.178-19.128-29.853-19.144-29.681,0c0.437,47.81,5.949,95.075,11.873,142.453
-              c2.338,18.732,32.044,18.961,29.681,0C192.332,282.005,186.824,234.744,186.387,186.935z"/>
-            <path d="M248.712,183.967c-1.026-19.032-30.709-19.136-29.681,0c2.829,52.483,4.723,105.01,10.39,157.293
-              c2.039,18.819,31.738,19.017,29.681,0C253.434,288.977,251.536,236.45,248.712,183.967z"/>
-            <path d="M284.857,186.427c7.993,58.711,4.169,118.058,3.92,177.089c-0.081,19.139,29.595,19.134,29.681,0
-              c0.26-61.896,3.393-123.445-4.98-184.983C310.902,159.648,282.308,167.723,284.857,186.427z"/>
+              c-1.364,0.109-2.595,0.406-3.761,0.779c-7.373-0.104-12.075-3.682-15.157-11.263C106.564,96.885,108.057,95.138,110.845,92.726z"
+            />
+            <path
+              d="M186.387,186.935c-0.178-19.128-29.853-19.144-29.681,0c0.437,47.81,5.949,95.075,11.873,142.453
+              c2.338,18.732,32.044,18.961,29.681,0C192.332,282.005,186.824,234.744,186.387,186.935z"
+            />
+            <path
+              d="M248.712,183.967c-1.026-19.032-30.709-19.136-29.681,0c2.829,52.483,4.723,105.01,10.39,157.293
+              c2.039,18.819,31.738,19.017,29.681,0C253.434,288.977,251.536,236.45,248.712,183.967z"
+            />
+            <path
+              d="M284.857,186.427c7.993,58.711,4.169,118.058,3.92,177.089c-0.081,19.139,29.595,19.134,29.681,0
+              c0.26-61.896,3.393-123.445-4.98-184.983C310.902,159.648,282.308,167.723,284.857,186.427z"
+            />
           </svg>
         </div>
       </a>
     </div>
     <div v-else>
       <label
-          class="w-full flex flex-col items-center px-4 py-6 tracking-wide uppercase cursor-pointer hover:text-pink-700">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        class="w-full flex flex-col items-center px-4 py-6 tracking-wide uppercase cursor-pointer hover:text-pink-700"
+      >
+        <svg
+          class="w-8 h-8"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
-              d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"/>
+            d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
+          />
         </svg>
         <p class="mt-2 text-base leading-normal">Select references</p>
         <p class="text-sm">(up to 3 files)</p>
-        <p v-if="tooManyFiles" class="text-red-800">Sorry that's too many files</p>
-        <p v-if="uploadError" class="text-red-800">Sorry. Something went wrong when uploading. Try again in a couple of
-          minutes</p>
-        <input accept="image/*" class="hidden" multiple type='file' v-on:change="setFiles"/>
+        <p v-if="tooManyFiles" class="text-red-800">
+          Sorry that's too many files
+        </p>
+        <p v-if="uploadError" class="text-red-800">
+          Sorry. Something went wrong when uploading. Try again in a couple of
+          minutes
+        </p>
+        <input
+          accept="image/*"
+          class="hidden"
+          multiple
+          type="file"
+          @change="setFiles"
+        />
       </label>
     </div>
   </div>
 </template>
 
 <script>
-import {ref} from 'vue'
+import { ref } from "vue";
 import axios from "axios";
-import {airbrake} from "../main";
+import { airbrake } from "../main";
 
-const MAX_FILES = 3
-const PRESIGN_API_PATH = "https://heartpoke.co.uk/api/presign"
+const MAX_FILES = 3;
+const PRESIGN_API_PATH = "https://heartpoke.co.uk/api/presign";
 
 const uploadToS3 = async (img, url, onProgress) => {
   const options = {
-    headers: { 'Content-Type': img.type },
-    onUploadProgress: ({loaded, total}) => onProgress(Math.round(loaded / total * 90) + 10)
-  }
-  await axios.put(url, img, options)
-}
+    headers: { "Content-Type": img.type },
+    onUploadProgress: ({ loaded, total }) =>
+      onProgress(Math.round((loaded / total) * 90) + 10),
+  };
+  await axios.put(url, img, options);
+};
 
 const getS3Url = async (img) => {
-  const matches = img.name.match(/\.([a-zA-Z0-9]+)$/)
-  const extension = (matches) ? matches[1] : 'jpg'
-  const presignResponse = await axios.post(PRESIGN_API_PATH, { extension })
-  return presignResponse.data
-}
+  const matches = img.name.match(/\.([a-zA-Z0-9]+)$/);
+  const extension = matches ? matches[1] : "jpg";
+  const presignResponse = await axios.post(PRESIGN_API_PATH, { extension });
+  return presignResponse.data;
+};
 
 const uploadImage = async (img, onProgress) => {
-  const {url, key} = await getS3Url(img)
-  await uploadToS3(img, url, onProgress)
-  return `https://heartpoke.co.uk/${key}`
-}
+  const { url, key } = await getS3Url(img);
+  await uploadToS3(img, url, onProgress);
+  return `https://heartpoke.co.uk/${key}`;
+};
 
 export default {
   name: "FileSelect",
+  emits: ["uploading-started", "uploading-finished"],
   setup() {
-    const tooManyFiles = ref(false)
-    const uploadError = ref(false)
-    return {tooManyFiles, uploadError}
+    const tooManyFiles = ref(false);
+    const uploadError = ref(false);
+    return { tooManyFiles, uploadError };
   },
   data() {
     return {
       files: [],
-      urls: []
-    }
+      urls: [],
+    };
   },
-  emits: ['uploading-started', 'uploading-finished'],
   methods: {
     setFiles: function (event) {
-      this.uploadError = false
+      this.uploadError = false;
 
       const files = [...event.target.files];
       if (files.length > MAX_FILES) {
-        this.tooManyFiles = true
+        this.tooManyFiles = true;
       } else {
-        this.tooManyFiles = false
-        this.files = files
-        this.$nextTick(this.uploadFiles)
+        this.tooManyFiles = false;
+        this.files = files;
+        this.$nextTick(this.uploadFiles);
       }
     },
     clearFiles: function () {
-      this.files = []
-      this.urls = []
+      this.files = [];
+      this.urls = [];
     },
     uploadFiles: async function () {
-      this.$emit('uploading-started')
+      this.$emit("uploading-started");
       const promises = this.files.map(async (file) => {
         const onProgress = (percentage) => {
-          this.$refs[file.name].style.setProperty('--percentage', `${percentage}%`)
-        }
-        return await uploadImage(file, onProgress)
-      })
+          this.$refs[file.name].style.setProperty(
+            "--percentage",
+            `${percentage}%`
+          );
+        };
+        return await uploadImage(file, onProgress);
+      });
       try {
-        this.urls = await Promise.all(promises)
+        this.urls = await Promise.all(promises);
       } catch (e) {
-        this.uploadError = true
-        this.clearFiles()
-        console.error(e)
-        airbrake.notify(e)
+        this.uploadError = true;
+        this.clearFiles();
+        console.error(e);
+        airbrake.notify(e);
       } finally {
-        this.$emit('uploading-finished')
+        this.$emit("uploading-finished");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
 .filename {
   --percentage: 1%;
-  background: rgba(0, 0, 0, 0) linear-gradient(to right, black var(--percentage), rgb(195, 194, 194) var(--percentage)) repeat scroll 0% 0%;
+
+  background: rgba(0, 0, 0, 0)
+    linear-gradient(
+      to right,
+      black var(--percentage),
+      rgb(195, 194, 194) var(--percentage)
+    )
+    repeat scroll 0% 0%;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent;
 }
 
 .icon {
-  height: .9em;
+  height: 0.9em;
 }
 </style>

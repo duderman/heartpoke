@@ -1,4 +1,4 @@
-import vue from '@vitejs/plugin-vue'
+import vue from "@vitejs/plugin-vue";
 
 /**
  * @type {import('vite').UserConfig}
@@ -6,6 +6,6 @@ import vue from '@vitejs/plugin-vue'
 export default {
   plugins: [vue()],
   build: {
-    sourcemap: true
-  }
-}
+    sourcemap: true,
+  },
+};

@@ -1,31 +1,31 @@
-import {createApp} from 'vue'
-import VueSmoothScroll from 'vue3-smooth-scroll'
+import { createApp } from "vue";
+import VueSmoothScroll from "vue3-smooth-scroll";
 import VueEasyLightBox from "vue-easy-lightbox";
-import Carousel from './components/carousel'
-import {VueReCaptcha} from 'vue-recaptcha-v3'
-import {Notifier} from '@airbrake/browser';
+import Carousel from "./components/carousel";
+import { VueReCaptcha } from "vue-recaptcha-v3";
+import { Notifier } from "@airbrake/browser";
 
-import App from './App.vue'
-import './index.css'
+import App from "./App.vue";
+import "./index.css";
 
 // noinspection JSCheckFunctionSignatures
 const app = createApp(App)
-  .use(VueSmoothScroll, {offset: -20})
+  .use(VueSmoothScroll, { offset: -20 })
   .use(Carousel)
   .use(VueEasyLightBox)
-  .use(VueReCaptcha, {siteKey: "6LdzI5caAAAAABGKERpWx2URDf9Tye0KE2odzJVB"})
+  .use(VueReCaptcha, { siteKey: "6LdzI5caAAAAABGKERpWx2URDf9Tye0KE2odzJVB" });
 
 export const airbrake = new Notifier({
-  environment: 'production',
+  environment: "production",
   projectId: 329006,
-  projectKey: '04e2d81e6cbf5c8c68380135ea20b213'
+  projectKey: "04e2d81e6cbf5c8c68380135ea20b213",
 });
 
 app.config.errorHandler = (error, _vm, info) => {
   airbrake.notify({
     error,
-    params: {info}
+    params: { info },
   });
-}
+};
 
-app.mount('#app')
+app.mount("#app");

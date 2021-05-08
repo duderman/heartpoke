@@ -1,11 +1,11 @@
-import Carousel from './Carousel.vue'
+import Carousel from "./Carousel.vue";
 
 const install = (Vue) => {
-	Vue.component('carousel', Carousel)
-}
+  Vue.component("Carousel", Carousel);
+};
 
 export default {
-	install
-}
+  install,
+};
 
-export {Carousel}
+export { Carousel };

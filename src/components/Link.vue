@@ -1,6 +1,6 @@
 <template>
-  <a :href="url" target="_blank" class="text-pink-700 underline">
-    <slot></slot>
+  <a :href="url" class="text-pink-700 underline" target="_blank">
+    <slot />
   </a>
 </template>
 
@@ -10,12 +10,8 @@ export default {
   props: {
     url: {
       type: String,
-      required: true
+      required: true,
     },
-  }
-}
+  },
+};
 </script>
-
-<style scoped>
-
-</style>
