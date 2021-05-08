@@ -57,7 +57,7 @@
     </div>
     <div v-else>
       <label
-        class="w-full flex flex-col items-center py-2 tracking-wide uppercase cursor-pointer hover:text-pink-700"
+        class="w-full flex flex-col items-center tracking-wide uppercase cursor-pointer hover:text-pink-700"
       >
         <svg
           class="w-8 h-8"
@@ -168,6 +168,7 @@ export default {
         this.uploadError = true;
         this.clearFiles();
         console.error(e);
+        // noinspection ES6MissingAwait
         airbrake.notify(e);
       } finally {
         this.$emit("uploading-finished");
@@ -187,7 +188,7 @@ export default {
       black var(--percentage),
       rgb(195, 194, 194) var(--percentage)
     )
-    repeat scroll 0% 0%;
+    repeat scroll 0 0;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent;
 }

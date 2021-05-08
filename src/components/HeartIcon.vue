@@ -26,36 +26,47 @@ export default {
   0% {
     opacity: 0;
   }
+
   10% {
     opacity: 0;
   }
+
   15% {
     opacity: 1;
   }
+
   20% {
     opacity: 0;
   }
+
   25% {
     opacity: 1;
   }
+
   30% {
     opacity: 0;
   }
+
   70% {
     opacity: 0;
   }
+
   75% {
     opacity: 1;
   }
+
   80% {
     opacity: 0;
   }
+
   85% {
     opacity: 1;
   }
+
   90% {
     opacity: 0;
   }
+
   100% {
     opacity: 0;
   }

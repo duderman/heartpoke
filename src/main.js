@@ -8,7 +8,7 @@ import { Notifier } from "@airbrake/browser";
 import App from "./App.vue";
 import "./index.css";
 
-// noinspection JSCheckFunctionSignatures
+// noinspection JSCheckFunctionSignatures,SpellCheckingInspection
 const app = createApp(App)
   .use(VueSmoothScroll, { offset: -20 })
   .use(Carousel)
@@ -22,6 +22,7 @@ export const airbrake = new Notifier({
 });
 
 app.config.errorHandler = (error, _vm, info) => {
+  // noinspection JSIgnoredPromiseFromCall
   airbrake.notify({
     error,
     params: { info },

@@ -11,7 +11,7 @@
     </div>
     <div class="agile__slide">
       <a href="https://youtu.be/z9E5BgnNAVU" target="_blank">
-        <img src="../assets/video_preview_slide.jpeg" alt="Tattoo Proccess" />
+        <img src="../assets/video_preview_slide.jpeg" alt="Tattoo Process" />
       </a>
     </div>
   </Carousel>

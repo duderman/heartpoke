@@ -40,7 +40,10 @@ export default {
 
 <style scoped>
 #header {
+  /* noinspection CssOverwrittenProperties */
   height: 100vh;
+
+  /* noinspection CssUnresolvedCustomProperty,CssOverwrittenProperties */
   height: calc(var(--vh, 1vh) * 100);
 }
 

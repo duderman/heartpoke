@@ -22,6 +22,7 @@ export default {
   name: "App",
   components: { Header, Hero, Portfolio, Book, Studio, Footer },
   created() {
+    // noinspection JSUnresolvedFunction
     AOS.init({
       duration: 1000,
     });
@@ -30,11 +31,6 @@ export default {
 </script>
 
 <style>
-.icon {
-  display: inline-flex;
-  align-self: center;
-}
-
 .icon svg,
 .icon img {
   height: 1em;

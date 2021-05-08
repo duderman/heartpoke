@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <template>
   <div class="mt-3">
     <label :for="name"> {{ label }}<span v-if="required"> *</span></label>

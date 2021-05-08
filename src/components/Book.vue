@@ -26,7 +26,7 @@
         availability.
       </p>
       <p class="text-gray-500 mt-2">
-        Please understand that I can decline your idea if it doesn’t suit my
+        Please understand that I can decline your idea if it doesn't suit my
         style of drawing and/or tattooing.
       </p>
       <Form
@@ -210,6 +210,7 @@ export default {
           this.bookedSuccessfully = true;
         } catch (e) {
           console.error(e);
+          // noinspection ES6MissingAwait
           airbrake.notify(e);
           this.showError();
         } finally {
