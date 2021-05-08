@@ -57,7 +57,7 @@
     </div>
     <div v-else>
       <label
-        class="w-full flex flex-col items-center px-4 py-6 tracking-wide uppercase cursor-pointer hover:text-pink-700"
+        class="w-full flex flex-col items-center py-2 tracking-wide uppercase cursor-pointer hover:text-pink-700"
       >
         <svg
           class="w-8 h-8"
@@ -70,7 +70,7 @@
           />
         </svg>
         <p class="mt-2 text-base leading-normal">Select references</p>
-        <p class="text-sm">(up to 3 files)</p>
+        <p class="text-sm">(up to {{ MAX_FILES }} files)</p>
         <p v-if="tooManyFiles" class="text-red-800">
           Sorry that's too many files
         </p>
@@ -126,7 +126,7 @@ export default {
   setup() {
     const tooManyFiles = ref(false);
     const uploadError = ref(false);
-    return { tooManyFiles, uploadError };
+    return { tooManyFiles, uploadError, MAX_FILES };
   },
   data() {
     return {
