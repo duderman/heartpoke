@@ -6,11 +6,26 @@
     h1 {
         @apply text-4xl;
         @apply mt-10;
+        @apply mb-5;
         @apply font-black;
+        text-transform: uppercase;
+        text-shadow: 2px 2px rgb(190, 24, 93);
     }
 
     h2 {
         @apply text-2xl;
+    }
+
+    h1,h2 {
+        @apply text-white;
+        --stroke-opacity: 0.3;
+        --stroke-width: 2px;
+        -webkit-text-stroke: var(--stroke-width) rgba(190, 24, 93, var(--stroke-opacity));
+    }
+
+    h2 {
+        --stroke-opacity: 0.1;
+        --stroke-width: 1px;
     }
 }
 

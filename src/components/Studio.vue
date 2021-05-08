@@ -1,7 +1,8 @@
 <template>
-  <h1>Studio</h1>
-  <h2>VaporWave Tattoo</h2>
-  <h3>5 Crown Works, Temple Street, London E2 6QQ</h3>
+  <h1 class="mb-2">Studio</h1>
+
+  <div class="text-2xl">VaporWave Tattoo</div>
+  <div>5 Crown Works, Temple Street, London E2 6QQ</div>
 
   <iframe
       id="studio-map"

@@ -1,6 +1,6 @@
 <template>
-  <section id="book" ref="bookRef" class="mx-7 mt-5">
-    <h1 class="my-10">Book</h1>
+  <section id="book" ref="bookRef" class="px-7">
+    <h1>Book</h1>
 
     <div v-if="isBookingClosed" class="text-xl">
       <p>Thank you for being interested in my art! Unfortunately booking is closed at the moment (consultations are also unavailable).
