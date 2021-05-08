@@ -31,6 +31,11 @@ export default {
 </script>
 
 <style>
+.icon {
+  display: inline-flex;
+  align-self: center;
+}
+
 .icon svg,
 .icon img {
   height: 1em;
