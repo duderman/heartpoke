@@ -28,8 +28,7 @@
   h2 {
     @apply text-white;
 
-    -webkit-text-stroke:
-      var(--stroke-width)
+    -webkit-text-stroke: var(--stroke-width)
       rgba(190, 24, 93, var(--stroke-opacity));
   }
 }

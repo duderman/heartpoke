@@ -6,7 +6,8 @@
     "build": "vite build --outDir cf/lib/frontend",
     "lint-js": "eslint 'src/**/*.{js,vue}'",
     "lint-css": "stylelint 'src/**/*.{css,vue}'",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "prettier-check": "prettier --check ."
   },
   "dependencies": {
     "@airbrake/browser": "^2.1.3",
