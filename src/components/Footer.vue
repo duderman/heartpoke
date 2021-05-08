@@ -17,22 +17,3 @@ export default {
 name: "Footer"
 }
 </script>
-
-<style scoped>
-.icon {
-  display: inline-flex;
-  align-self: center;
-}
-
-.icon svg, .icon img {
-  height: 1em;
-  width: 1em;
-  fill: currentColor;
-}
-
-.icon.baseline svg, .icon img {
-  top: .125em;
-  position: relative;
-}
-
-</style>

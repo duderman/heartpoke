@@ -45,4 +45,20 @@ h1,.with-stroke {
   --stroke-opacity: 0.1;
   --stroke-width: 1px;
 }
+
+.icon {
+  display: inline-flex;
+  align-self: center;
+}
+
+.icon svg, .icon img {
+  height: 1em;
+  width: 1em;
+  fill: currentColor;
+}
+
+.icon.baseline svg, .icon img {
+  top: .125em;
+  position: relative;
+}
 </style>
