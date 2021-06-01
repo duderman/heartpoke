@@ -24,7 +24,7 @@ export default {
   created() {
     // noinspection JSUnresolvedFunction
     AOS.init({
-      duration: 1000,
+      duration: 1010,
     });
   },
 };
