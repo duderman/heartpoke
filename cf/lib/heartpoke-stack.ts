@@ -12,7 +12,7 @@ import {LambdaProxyIntegration} from "@aws-cdk/aws-apigatewayv2-integrations"
 import * as path from "path";
 
 
-export class HeartpokeCfStack extends cdk.Stack {
+export class HeartpokeStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -111,12 +111,6 @@ export class HeartpokeCfStack extends cdk.Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL
     });
 
-    // uploads index.html to s3 bucket
-    new s3deploy.BucketDeployment(this, "DeployWebsite", {
-      sources: [s3deploy.Source.asset(`${__dirname}/frontend`)],
-      destinationBucket: websiteBucket,
-    });
-
     websiteBucket.addToResourcePolicy(
       new iam.PolicyStatement({
         sid: "Grant Cloudfront Origin Access Identity access to S3 bucket",
@@ -135,7 +129,7 @@ export class HeartpokeCfStack extends cdk.Stack {
         })
     );
 
-    new cloudfront.CloudFrontWebDistribution(this, "HeartPokeDistribution", {
+    const distribution = new cloudfront.CloudFrontWebDistribution(this, "HeartPokeDistribution", {
       comment: "CDN for HeartPoke App",
       defaultRootObject: "index.html",
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -194,6 +188,13 @@ export class HeartpokeCfStack extends cdk.Stack {
           ],
         },
       ],
+    });
+
+    new s3deploy.BucketDeployment(this, "DeployWebsite", {
+      sources: [s3deploy.Source.asset(`${__dirname}/frontend`)],
+      destinationBucket: websiteBucket,
+      distributionPaths: ['/index.html', '/logo.png', '/favicon.ico'],
+      distribution
     });
   }
 }
