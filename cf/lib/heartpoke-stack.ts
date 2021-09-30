@@ -24,7 +24,7 @@ export class HeartpokeStack extends cdk.Stack {
 
     const httpApi = new apigatewayv2.HttpApi(this, "HeartpokeApiGateway");
 
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+    const ADMIN_EMAIL = process.env.HEARTPOKE_ADMIN_EMAIL
 
     if (!ADMIN_EMAIL) {
       throw "ADMIN_EMAIL must be set"
