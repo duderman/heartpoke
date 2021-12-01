@@ -42,6 +42,7 @@
           :max="config.spec.meta?.max"
           :name="name"
           :placeholder="config.spec.meta?.placeholder"
+          :options="config.spec.meta?.options"
           :required="config.spec.presence === 'required'"
           :type="config.spec.meta?.inputType || config.type"
           @change="valueChanged(values)"
@@ -170,11 +171,11 @@ export default {
         .email()
         .label("Your Email")
         .meta({ placeholder: "email@example.com" }),
-      placement: yup
-        .string()
-        .required()
-        .label("Tattoo Placement")
-        .meta({ placeholder: "Shoulder, Ankle, etc" }),
+      placement: yup.string().required().label("Tattoo Placement").meta({
+        placeholder: "Shoulder, Ankle, etc",
+        disclaimer:
+          "(please keep in mind that I’m not accepting enquiries for stomach and rib tattoos if it’s not a part of my “wannado” concepts)",
+      }),
       size: yup
         .string()
         .required()
@@ -188,9 +189,18 @@ export default {
         .string()
         .label("Additional Comments")
         .meta({ inputType: "textarea" }),
+      technique: yup
+        .string()
+        .required()
+        .label("Preferable tattooing technique ")
+        .meta({
+          inputType: "select",
+          options: ["Artist's choice", "Hand poke", "Machine"],
+        }),
     });
     const initialValues = {
       dob: maxDate,
+      technique: "Artist's choice",
     };
     return { schema, initialValues };
   },

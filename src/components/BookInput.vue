@@ -13,6 +13,17 @@
         :name="name"
         @change="handleChange"
       />
+      <select
+        v-else-if="type === 'select'"
+        v-bind="field"
+        :class="classes"
+        :name="name"
+        @change="handleChange"
+      >
+        <option v-for="option in options" :key="option" :value="option">
+          {{ option }}
+        </option>
+      </select>
       <input
         v-else
         v-bind="field"
@@ -59,6 +70,10 @@ export default {
       type: String,
       default: "",
     },
+    options: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -71,7 +86,8 @@ export default {
 
 <style scoped>
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   @apply outline-none;
   @apply border-pink-700;
 
