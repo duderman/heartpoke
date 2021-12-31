@@ -44,7 +44,8 @@
           :placeholder="config.spec.meta?.placeholder"
           :options="config.spec.meta?.options"
           :required="config.spec.presence === 'required'"
-          :type="config.spec.meta?.inputType || config.type"
+          :tag="config.spec.meta?.tag"
+          :input-type="config.spec.meta?.inputType"
           @change="valueChanged(values)"
         >
           {{ config.spec.meta?.disclaimer }}
@@ -135,7 +136,7 @@ export default {
     const isInvalid = ref(true);
     const bookedSuccessfully = ref(false);
     const bookingFailed = ref(false);
-    const isBookingClosed = true;
+    const isBookingClosed = false;
 
     return {
       bookRef,
@@ -171,6 +172,13 @@ export default {
         .email()
         .label("Your Email")
         .meta({ placeholder: "email@example.com" }),
+      email_confirmation: yup
+        .string()
+        .required()
+        .oneOf([yup.ref("email"), null], "Emails must match")
+        .email()
+        .label("Email confirmation")
+        .meta({ placeholder: "email@example.com" }),
       placement: yup.string().required().label("Tattoo Placement").meta({
         placeholder: "Shoulder, Ankle, etc",
         disclaimer:
@@ -182,19 +190,19 @@ export default {
         .label("Approximate Size (in cm)")
         .meta({ placeholder: "3-5 cm" }),
       description: yup.string().required().label("Tattoo description").meta({
-        inputType: "textarea",
+        tag: "textarea",
         disclaimer: descriptionDisclaimer,
       }),
       comments: yup
         .string()
         .label("Additional Comments")
-        .meta({ inputType: "textarea" }),
+        .meta({ tag: "textarea" }),
       technique: yup
         .string()
         .required()
         .label("Preferable tattooing technique ")
         .meta({
-          inputType: "select",
+          tag: "select",
           options: ["Artist's choice", "Hand poke", "Machine"],
         }),
     });

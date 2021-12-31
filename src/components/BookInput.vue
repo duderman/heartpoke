@@ -6,34 +6,20 @@
       <slot />
     </p>
     <Field v-slot="{ field, handleChange }" :name="name">
-      <textarea
-        v-if="type === 'textarea'"
+      <component
+        :is="tag"
         v-bind="field"
         :class="classes"
         :name="name"
-        @change="handleChange"
-      />
-      <select
-        v-else-if="type === 'select'"
-        v-bind="field"
-        :class="classes"
-        :name="name"
+        :max="max"
+        :placeholder="placeholder"
+        :type="inputType"
         @change="handleChange"
       >
         <option v-for="option in options" :key="option" :value="option">
           {{ option }}
         </option>
-      </select>
-      <input
-        v-else
-        v-bind="field"
-        :class="classes"
-        :max="max"
-        :name="name"
-        :placeholder="placeholder"
-        :type="type"
-        @change="handleChange"
-      />
+      </component>
     </Field>
     <ErrorMessage :name="name" class="text-red-500" />
   </div>
@@ -58,7 +44,11 @@ export default {
       type: Boolean,
       default: true,
     },
-    type: {
+    tag: {
+      type: String,
+      default: "input",
+    },
+    inputType: {
       type: String,
       default: "text",
     },
