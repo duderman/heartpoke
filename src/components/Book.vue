@@ -136,7 +136,7 @@ export default {
     const isInvalid = ref(true);
     const bookedSuccessfully = ref(false);
     const bookingFailed = ref(false);
-    const isBookingClosed = false;
+    const isBookingClosed = true;
 
     return {
       bookRef,
