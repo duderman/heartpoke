@@ -66,10 +66,11 @@
         <Button
           :disabled="isInvalid || isWaiting"
           :loading="isWaiting"
-          @click="bookBtnClicked(values)"
+          @click="(e) => bookBtnClicked(e, values)"
         >
           Book now
         </Button>
+        <ConfirmDialogue ref="confirmDialogue" />
         <div :class="{ ninja: !bookingFailed }" class="text-red-500 mt-5">
           <p class="text-2xl">Something went wrong :(</p>
           <p>Try again in a couple of minutes</p>
@@ -89,9 +90,10 @@ import BookInput from "./BookInput.vue";
 import FileSelect from "./FileSelect.vue";
 import Button from "./Button.vue";
 import Link from "./Link.vue";
-import { Form } from "vee-validate";
-
+import ConfirmDialogue from "./ConfirmDialogue.vue";
 import Heart from "./HeartIcon.vue";
+
+import { Form } from "vee-validate";
 
 import { airbrake } from "../main";
 
@@ -115,7 +117,15 @@ function testAge(dob) {
 
 export default {
   name: "Book",
-  components: { BookInput, FileSelect, Button, Form, Heart, Link },
+  components: {
+    BookInput,
+    FileSelect,
+    Button,
+    Form,
+    Heart,
+    Link,
+    ConfirmDialogue,
+  },
   setup() {
     const bookRef = ref(null);
     const smoothScroll = inject("smoothScroll");
@@ -136,7 +146,7 @@ export default {
     const isInvalid = ref(true);
     const bookedSuccessfully = ref(false);
     const bookingFailed = ref(false);
-    const isBookingClosed = true;
+    const isBookingClosed = false;
 
     return {
       bookRef,
@@ -213,19 +223,40 @@ export default {
     return { schema, initialValues };
   },
   methods: {
-    async bookBtnClicked(values) {
+    async bookBtnClicked(e, values) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
       const { valid } = await this.$refs.form.validate();
       if (valid) {
         this.isWaiting = true;
         this.isInvalid = true;
         try {
+          const references = [...this.$refs.referencesInput.urls];
+
+          if (references.length === 0) {
+            const ok = await this.$refs.confirmDialogue.show({
+              title: "Send Form?",
+              message:
+                "Are you sure you want to submit form without references",
+              okButton: "Yes",
+            });
+
+            if (!ok) {
+              return false;
+            }
+          }
+
           await this.recaptcha();
 
-          const references = [...this.$refs.referencesInput.urls];
           const params = { ...values, references };
 
-          await axios.post("https://heartpoke.co.uk/api/book", params);
+          if (process.env.NODE_ENV !== "development") {
+            await axios.post("https://heartpoke.co.uk/api/book", params);
+          }
+
           this.bookedSuccessfully = true;
+          this.scrollToBook();
         } catch (e) {
           console.error(e);
           // noinspection ES6MissingAwait
@@ -238,6 +269,8 @@ export default {
       } else {
         this.scrollToBook();
       }
+
+      return false;
     },
     valueChanged(currentValues) {
       this.isInvalid = !this.schema.isValidSync(currentValues);
