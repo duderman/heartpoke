@@ -63,6 +63,24 @@
             @uploading-finished="uploadingFinished"
           />
         </div>
+        <div class="mt-3 mb-3">
+          <input
+            id="toc"
+            ref="toc"
+            type="checkbox"
+            @change="() => (tocError = false)"
+          />
+          <label for="toc">
+            I’ve carefully read
+            <Link
+              url="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTAwOTMzMzA1MzM5MzI0?story_media_id=2740950280852036870"
+              >Instagram highlight F.A.Q.</Link
+            ></label
+          >
+          <div :class="{ ninja: !tocError }" class="text-red-500">
+            <p>You must accept it first</p>
+          </div>
+        </div>
         <Button
           :disabled="isInvalid || isWaiting"
           :loading="isWaiting"
@@ -146,6 +164,7 @@ export default {
     const isInvalid = ref(true);
     const bookedSuccessfully = ref(false);
     const bookingFailed = ref(false);
+    const tocError = ref(false);
     const isBookingClosed = false;
 
     return {
@@ -156,6 +175,7 @@ export default {
       isInvalid,
       bookedSuccessfully,
       bookingFailed,
+      tocError,
       isBookingClosed,
     };
   },
@@ -226,6 +246,11 @@ export default {
     async bookBtnClicked(e, values) {
       e.preventDefault();
       e.stopImmediatePropagation();
+
+      if (!this.$refs.toc.checked) {
+        this.tocError = true;
+        return false;
+      }
 
       const { valid } = await this.$refs.form.validate();
       if (valid) {
