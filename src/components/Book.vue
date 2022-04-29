@@ -211,8 +211,6 @@ export default {
         .meta({ placeholder: "email@example.com" }),
       placement: yup.string().required().label("Tattoo Placement").meta({
         placeholder: "Shoulder, Ankle, etc",
-        disclaimer:
-          "(please keep in mind that I’m not accepting enquiries for stomach and rib tattoos if it’s not a part of my “wannado” concepts)",
       }),
       size: yup
         .string()
