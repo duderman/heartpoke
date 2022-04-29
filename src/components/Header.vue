@@ -15,7 +15,7 @@
     </video>
     <div class="self-stretch mt-auto">
       <h1 data-aos="fade-down">Heart.Poke</h1>
-      <h2 class="lowercase" data-aos="fade-down">Handpoke tattoo artist</h2>
+      <h2 class="lowercase" data-aos="fade-down">Tattoo artist</h2>
       <Button class="mt-5 uppercase book-btn" data-aos="fade-up" url="#book">
         Book now
       </Button>
