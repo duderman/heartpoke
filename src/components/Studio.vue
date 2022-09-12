@@ -1,8 +1,10 @@
 <template>
-  <h1 class="mb-2">Studio</h1>
+  <h1 class="mb-1">Studio</h1>
 
   <div class="text-2xl">Blank Collective</div>
-  <div>Unit 1, 82-84 Childers Street London, United Kingdom SE8 5FS</div>
+  <div class="mx-7">
+    Unit 1, 82-84 Childers Street London, United Kingdom SE8 5FS
+  </div>
 
   <iframe id="studio-map" ref="iframe" class="w-screen mt-5 h-96" />
 </template>
