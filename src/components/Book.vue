@@ -182,8 +182,7 @@ export default {
   data() {
     const maxDate = getMaxDate();
     const descriptionDisclaimer =
-      "It is important for me to understand the idea of your tattoo, so the more specifically you describe all the" +
-      "nuances that are important to you, the easier it will be for us to work";
+      "Please keep your description short and brief. Be descriptive about visuals only";
     const schema = yup.object({
       name: yup
         .string()
@@ -233,6 +232,11 @@ export default {
           tag: "select",
           options: ["Artist's choice", "Hand poke", "Machine"],
         }),
+      city: yup
+        .string()
+        .required()
+        .label("City")
+        .meta({ placeholder: "London" }),
     });
     const initialValues = {
       dob: maxDate,
