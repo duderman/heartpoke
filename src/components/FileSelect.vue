@@ -155,10 +155,9 @@ export default {
       this.$emit("uploading-started");
       const promises = this.files.map(async (file) => {
         const onProgress = (percentage) => {
-          this.$refs[file.name].style.setProperty(
-            "--percentage",
-            `${percentage}%`
-          );
+          const fileElement = (this.$refs[file.name] || [])[0];
+          fileElement &&
+            fileElement.style.setProperty("--percentage", `${percentage}%`);
         };
         return await uploadImage(file, onProgress);
       });
