@@ -16,7 +16,7 @@ const app = createApp(App)
   .use(VueReCaptcha, { siteKey: "6LdzI5caAAAAABGKERpWx2URDf9Tye0KE2odzJVB" });
 
 export const airbrake = new Notifier({
-  environment: "production",
+  environment: process.env.NODE_ENV,
   projectId: 506141,
   projectKey: "37bbc487deaf0267f7a24cf1aca71339",
 });
