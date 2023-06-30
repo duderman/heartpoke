@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       classes:
-        "mt-2 w-full rounded-lg h-10 text-gray-700 px-3 shadow-lg border",
+        "my-2 w-full rounded-lg h-10 text-gray-700 px-3 shadow-lg border py-2",
     };
   },
 };
