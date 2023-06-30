@@ -231,6 +231,7 @@ export default {
         .meta({
           tag: "select",
           options: ["Artist's choice", "Hand poke", "Machine"],
+          inputType: null,
         }),
       city: yup
         .string()
