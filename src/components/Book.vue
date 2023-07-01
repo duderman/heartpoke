@@ -63,13 +63,8 @@
             @uploading-finished="uploadingFinished"
           />
         </div>
-        <div class="mt-3 mb-3">
-          <input
-            id="toc"
-            ref="toc"
-            type="checkbox"
-            @change="() => (tocError = false)"
-          />
+        <div class="my-3">
+          <input id="toc" v-model="tocChecked" type="checkbox" />
           <label for="toc">
             I’ve carefully read
             <Link
@@ -77,12 +72,9 @@
               >Instagram highlight F.A.Q.</Link
             ></label
           >
-          <div :class="{ ninja: !tocError }" class="text-red-500">
-            <p>You must accept it first</p>
-          </div>
         </div>
         <Button
-          :disabled="isInvalid || isWaiting"
+          :disabled="isInvalid || isWaiting || !tocChecked"
           :loading="isWaiting"
           @click="(e) => bookBtnClicked(e, values)"
         >
@@ -164,7 +156,7 @@ export default {
     const isInvalid = ref(true);
     const bookedSuccessfully = ref(false);
     const bookingFailed = ref(false);
-    const tocError = ref(false);
+    const tocChecked = ref(false);
     const isBookingClosed = false;
 
     return {
@@ -175,7 +167,7 @@ export default {
       isInvalid,
       bookedSuccessfully,
       bookingFailed,
-      tocError,
+      tocChecked,
       isBookingClosed,
     };
   },
@@ -249,11 +241,6 @@ export default {
     async bookBtnClicked(e, values) {
       e.preventDefault();
       e.stopImmediatePropagation();
-
-      if (!this.$refs.toc.checked) {
-        this.tocError = true;
-        return false;
-      }
 
       const { valid } = await this.$refs.form.validate();
       if (valid) {
